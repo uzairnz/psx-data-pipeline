@@ -24,7 +24,9 @@ START_DATE = "2014-01-01"  # Start collecting data from this date
 MARKET_CLOSE_HOUR = 18  # 6:00 PM Pakistan Time
 
 # URL settings
-PSX_BASE_URL = "https://dps.psx.com.pk"  # Base URL for PSX Data Portal
+# Update to the correct PSX website URL
+PSX_BASE_URL = "https://www.psx.com.pk"  # Base URL for PSX Official Website
+PSX_DATA_PORTAL_URL = "https://dps.psx.com.pk"  # Data Portal URL
 
 # Ensure directories exist
 for directory in [DATA_DIR, METADATA_DIR, LOG_DIR]:

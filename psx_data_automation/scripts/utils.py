@@ -9,6 +9,9 @@ This module contains shared helper functions for:
 - Date handling
 - File operations
 - Data processing
+
+Usage:
+    Import: from psx_data_automation.scripts.utils import fetch_url, date_range, etc.
 """
 
 import logging

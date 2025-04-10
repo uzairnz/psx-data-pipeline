@@ -16,8 +16,9 @@ import logging
 import sys
 from datetime import datetime
 
-from config import __version__, LOG_DIR
-from scripts.scrape_tickers import sync_tickers
+# Use absolute imports
+from psx_data_automation.config import __version__, LOG_DIR
+from psx_data_automation.scripts.scrape_tickers import sync_tickers
 
 # Set up logging
 log_file = LOG_DIR / f"pipeline_{datetime.now().strftime('%Y-%m-%d')}.log"
@@ -36,7 +37,7 @@ def setup_argparser():
     """Set up command line arguments."""
     parser = argparse.ArgumentParser(
         description="PSX Data Pipeline: Collect and maintain historical OHLC data for PSX tickers",
-        epilog="Example: python main.py --full-run"
+        epilog="Example: python -m psx_data_automation.main --full-run"
     )
     
     parser.add_argument('--sync-tickers', action='store_true', help='Sync ticker list from PSX')
@@ -65,14 +66,14 @@ def main():
     if args.download_historical:
         logger.info("Starting historical data download...")
         # Future: Import and call historical data download function
-        # from scripts.download_data import download_historical
+        # from psx_data_automation.scripts.download_data import download_historical
         # download_historical()
         logger.info("Historical data download not yet implemented")
     
     if args.daily_update:
         logger.info("Starting daily data update...")
         # Future: Import and call daily update function
-        # from scripts.update_data import update_daily
+        # from psx_data_automation.scripts.update_data import update_daily
         # update_daily()
         logger.info("Daily update not yet implemented")
     
