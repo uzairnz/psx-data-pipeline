@@ -51,10 +51,10 @@ psx_data_automation/
 - [x] Set up virtual environment (recommend: `venv` or `conda`)
 
 ### Phase 2: Ticker Management System
-- [ ] Implement `scrape_tickers.py` to fetch live ticker list from PSX
-- [ ] Compare new list with old one from `metadata/all_tickers.csv`
-- [ ] Log changes: additions, deletions, and renames
-- [ ] Update ticker CSV list accordingly
+- [x] Implement `scrape_tickers.py` to fetch live ticker list from PSX
+- [x] Compare new list with old one from `metadata/all_tickers.csv`
+- [x] Log changes: additions, deletions, and renames
+- [x] Update ticker CSV list accordingly
 
 ### Phase 3: Historical Data Collection
 - [ ] Build `download_data.py` to fetch 10 years of daily OHLC data per ticker
@@ -69,12 +69,12 @@ psx_data_automation/
   - Log update results
 
 ### Phase 5: Integration Pipeline
-- [ ] Create `main.py` as CLI entry-point
-- [ ] Allow modular runs:
-  - `--sync-tickers`
-  - `--download-historical`
-  - `--daily-update`
-  - `--full-run`
+- [x] Create `main.py` as CLI entry-point
+- [x] Allow modular runs:
+  - [x] `--sync-tickers`
+  - [ ] `--download-historical`
+  - [ ] `--daily-update`
+  - [x] `--full-run`
 
 ### Phase 6: Automation & Scheduling
 - [ ] Add Task Scheduler / Cron job documentation

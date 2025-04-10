@@ -17,6 +17,7 @@ import sys
 from datetime import datetime
 
 from config import __version__, LOG_DIR
+from scripts.scrape_tickers import sync_tickers
 
 # Set up logging
 log_file = LOG_DIR / f"pipeline_{datetime.now().strftime('%Y-%m-%d')}.log"
@@ -56,10 +57,10 @@ def main():
     
     if args.sync_tickers:
         logger.info("Starting ticker synchronization...")
-        # Future: Import and call ticker sync function
-        # from scripts.scrape_tickers import sync_tickers
-        # sync_tickers()
-        logger.info("Ticker synchronization not yet implemented")
+        success = sync_tickers()
+        if not success:
+            logger.error("Ticker synchronization failed")
+            return 1
     
     if args.download_historical:
         logger.info("Starting historical data download...")
@@ -77,11 +78,25 @@ def main():
     
     if args.full_run or not any([args.sync_tickers, args.download_historical, args.daily_update]):
         logger.info("Starting full pipeline run...")
-        # Call all functions in sequence
-        logger.info("Full pipeline not yet implemented")
+        
+        # Step 1: Sync tickers
+        logger.info("Step 1: Synchronizing tickers...")
+        success = sync_tickers()
+        if not success:
+            logger.error("Ticker synchronization failed - aborting pipeline")
+            return 1
+        
+        # Step 2: Download historical data (to be implemented)
+        logger.info("Step 2: Downloading historical data...")
+        logger.info("Historical data download not yet implemented")
+        
+        # Step 3: Daily update (to be implemented)
+        logger.info("Step 3: Performing daily update...")
+        logger.info("Daily update not yet implemented")
     
     logger.info("Pipeline execution completed")
+    return 0
 
 
 if __name__ == "__main__":
-    main() 
+    sys.exit(main()) 
