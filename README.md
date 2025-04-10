@@ -178,5 +178,4 @@ Uzair / [github.com/uzairnz](https://github.com/uzairnz)
 
 ---
 
-Ready to build? Let's start with Phase 1 ✅
 
