@@ -33,26 +33,102 @@ logger = logging.getLogger("psx_pipeline.tickers")
 TICKERS_CSV = METADATA_DIR / "all_tickers.csv"
 CHANGES_LOG = METADATA_DIR / "ticker_changes.log"
 
-# URL for listed companies on PSX
-LISTED_COMPANIES_URL = f"{PSX_BASE_URL}/listing/listed-companies"
+# URL for Market Watch on PSX Data Portal
+MARKET_WATCH_URL = f"{PSX_DATA_PORTAL_URL}/market-watch"
 
 
 def fetch_tickers_from_psx():
     """
-    Scrape the PSX website to get the current list of tickers.
+    Scrape the PSX Data Portal website to get the current list of tickers from Market Watch.
     
     Returns:
         list: List of ticker dictionaries with symbol, name, and sector
     """
-    logger.info("Fetching current ticker list from PSX website")
+    logger.info("Fetching current ticker list from PSX Data Portal")
     
     tickers = []
     
     try:
-        # Try from the main PSX website first (listed companies page)
+        # Try to fetch from the Market Watch section of PSX Data Portal
         try:
-            logger.info(f"Trying to fetch tickers from {LISTED_COMPANIES_URL}")
-            html_content = fetch_url(LISTED_COMPANIES_URL)
+            logger.info(f"Trying to fetch tickers from {MARKET_WATCH_URL}")
+            html_content = fetch_url(MARKET_WATCH_URL)
+            soup = parse_html(html_content)
+            
+            # Look for the market watch table
+            # The table might have classes like 'table', 'table-striped', etc.
+            table = soup.select_one('table.table')
+            
+            if not table:
+                # Try alternative selectors if the first one doesn't work
+                tables = soup.select('table')
+                if tables:
+                    # Use the table that has symbols data
+                    for potential_table in tables:
+                        # Check if this table has columns we need (Symbol, etc.)
+                        headers = potential_table.select('th')
+                        header_texts = [h.text.strip().upper() for h in headers]
+                        if any('SYMBOL' in txt for txt in header_texts):
+                            table = potential_table
+                            break
+            
+            if table:
+                # Extract header positions for mapping
+                headers = table.select('thead th')
+                header_mapping = {}
+                for i, header in enumerate(headers):
+                    header_text = header.text.strip().upper()
+                    if 'SYMBOL' in header_text:
+                        header_mapping['symbol'] = i
+                    elif 'CURRENT' in header_text or 'PRICE' in header_text:
+                        header_mapping['price'] = i
+                    elif 'VOLUME' in header_text:
+                        header_mapping['volume'] = i
+                    elif 'SECTOR' in header_text:
+                        header_mapping['sector'] = i
+                
+                # Process the table rows
+                rows = table.select('tbody tr')
+                
+                for row in rows:
+                    columns = row.select('td')
+                    if len(columns) >= 2:  # Ensure we have at least symbol and other data
+                        # Get symbol, which is always needed
+                        if 'symbol' in header_mapping:
+                            symbol_col = header_mapping['symbol']
+                            symbol = format_ticker_symbol(columns[symbol_col].text)
+                        else:
+                            # If we can't determine which column has the symbol, use the first column
+                            symbol = format_ticker_symbol(columns[0].text)
+                        
+                        # Initialize ticker with symbol and default values
+                        ticker = {
+                            'symbol': symbol,
+                            'name': symbol,  # Use symbol as name if name is not available
+                            'sector': "Unknown"
+                        }
+                        
+                        # Add to tickers list if it's a valid symbol (not empty or "Select...")
+                        if symbol and len(symbol) > 1 and 'SELECT' not in symbol.upper():
+                            tickers.append(ticker)
+                
+                logger.info(f"Successfully fetched {len(tickers)} tickers from PSX Market Watch")
+                
+                # If we successfully got tickers, return them
+                if tickers:
+                    return tickers
+            else:
+                logger.warning("Could not find ticker table on PSX Market Watch page")
+                
+        except Exception as e:
+            logger.warning(f"Failed to fetch tickers from PSX Market Watch: {str(e)}")
+        
+        # Try from the main PSX website as fallback
+        logger.info("Trying to fetch tickers from PSX corporate website...")
+        try:
+            # Use PSX_BASE_URL and any other potential endpoints
+            listed_companies_url = f"{PSX_BASE_URL}/listing/listed-companies"
+            html_content = fetch_url(listed_companies_url)
             soup = parse_html(html_content)
             
             # Find the table with tickers - PSX listed companies page
@@ -72,15 +148,18 @@ def fetch_tickers_from_psx():
                         }
                         tickers.append(ticker)
                 
-                logger.info(f"Successfully fetched {len(tickers)} tickers from PSX listed companies page")
-                return tickers
+                logger.info(f"Successfully fetched {len(tickers)} tickers from PSX corporate website")
+                
+                # If we successfully got tickers, return them
+                if tickers:
+                    return tickers
             else:
-                logger.warning("Could not find ticker table on PSX listed companies page")
+                logger.warning("Could not find ticker table on PSX corporate website")
                 
         except Exception as e:
-            logger.warning(f"Failed to fetch tickers from PSX listed companies page: {str(e)}")
+            logger.warning(f"Failed to fetch tickers from PSX corporate website: {str(e)}")
         
-        # Fall back to alternative scraping methods if the first method fails
+        # Fall back to alternative scraping methods if all previous methods fail
         logger.info("Trying alternative method to fetch tickers...")
         
         # For testing purposes, create mock data if we can't scrape
@@ -99,7 +178,18 @@ def fetch_tickers_from_psx():
             {'symbol': 'EFERT', 'name': 'Engro Fertilizers Limited', 'sector': 'Fertilizer'},
             # Adding a new ticker for testing changes
             {'symbol': 'BAHL', 'name': 'Bank Al Habib Limited', 'sector': 'Commercial Banks'},
-            {'symbol': 'MEBL', 'name': 'Meezan Bank Limited', 'sector': 'Commercial Banks'}
+            {'symbol': 'MEBL', 'name': 'Meezan Bank Limited', 'sector': 'Commercial Banks'},
+            # Add some tickers from the image
+            {'symbol': 'CNERGY', 'name': 'Cnergyico PK Limited', 'sector': 'Oil & Gas Marketing Companies'},
+            {'symbol': 'KEL', 'name': 'K-Electric Limited', 'sector': 'Power Generation & Distribution'},
+            {'symbol': 'SSGC', 'name': 'Sui Southern Gas Company Limited', 'sector': 'Oil & Gas Marketing Companies'},
+            {'symbol': 'PIBTL', 'name': 'Pakistan International Bulk Terminal Limited', 'sector': 'Transportation'},
+            {'symbol': 'MLCF', 'name': 'Maple Leaf Cement Factory Limited', 'sector': 'Cement'},
+            {'symbol': 'PAEL', 'name': 'Pak Elektron Limited', 'sector': 'Electrical Goods'},
+            {'symbol': 'FCCL', 'name': 'Fauji Cement Company Limited', 'sector': 'Cement'},
+            {'symbol': 'WTL', 'name': 'WorldCall Telecom Limited', 'sector': 'Technology & Communication'},
+            {'symbol': 'CPHL', 'name': 'CPL Holdings', 'sector': 'Pharmaceuticals'},
+            {'symbol': 'SNGP', 'name': 'Sui Northern Gas Pipelines Limited', 'sector': 'Oil & Gas Marketing Companies'}
         ]
         tickers = mock_tickers
         logger.info(f"Created {len(tickers)} mock tickers for testing")
