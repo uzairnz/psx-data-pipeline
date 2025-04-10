@@ -13,14 +13,19 @@ This script provides a command-line interface to:
 """
 
 import argparse
+import json
 import logging
+import os
 import sys
 from datetime import datetime
+from typing import Dict, List, Optional
 
 # Use absolute imports
-from psx_data_automation.config import __version__, LOG_DIR
-from psx_data_automation.scripts.scrape_tickers import sync_tickers
-from psx_data_automation.scripts.update_ticker_info import main as update_ticker_info
+from psx_data_automation.config import __version__, LOG_DIR, DATA_DIR, TICKERS_FILE
+from psx_data_automation.scripts.scrape_tickers import fetch_tickers_from_psx
+from psx_data_automation.scripts.update_ticker_info import update_ticker_info
+from psx_data_automation.scripts.historical_data import download_ticker_data
+from psx_data_automation.scripts.crawler import test_crawl4ai
 
 # Set up logging
 log_file = LOG_DIR / f"pipeline_{datetime.now().strftime('%Y-%m-%d')}.log"
@@ -35,85 +40,184 @@ logging.basicConfig(
 logger = logging.getLogger("psx_pipeline")
 
 
-def setup_argparser():
-    """Set up command line arguments."""
-    parser = argparse.ArgumentParser(
-        description="PSX Data Pipeline: Collect and maintain historical OHLC data for PSX tickers",
-        epilog="Example: python -m psx_data_automation.main --full-run"
-    )
+def save_tickers(tickers: List[Dict], filename: str) -> None:
+    """Save ticker data to a JSON file with datestamp."""
+    today = datetime.now().strftime("%Y%m%d")
+    filename = filename.replace(".json", f"_{today}.json")
+    filepath = os.path.join(DATA_DIR, filename)
     
-    parser.add_argument('--sync-tickers', action='store_true', help='Sync ticker list from PSX')
-    parser.add_argument('--download-historical', action='store_true', help='Download historical data for all tickers')
-    parser.add_argument('--daily-update', action='store_true', help='Update data with latest OHLC values')
-    parser.add_argument('--update-ticker-info', action='store_true', help='Update ticker names and sectors from PSX website')
-    parser.add_argument('--full-run', action='store_true', help='Execute complete pipeline')
-    parser.add_argument('--version', action='version', version=f'PSX Data Pipeline v{__version__}')
+    # Ensure directory exists
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
     
-    return parser
+    with open(filepath, "w") as f:
+        json.dump(tickers, f, indent=2)
+    
+    logger.info(f"Saved {len(tickers)} tickers to {filepath}")
+    
+    # Also save as the main tickers file without date
+    main_filepath = os.path.join(DATA_DIR, TICKERS_FILE)
+    with open(main_filepath, "w") as f:
+        json.dump(tickers, f, indent=2)
+
+
+def load_tickers(filename: Optional[str] = None) -> List[Dict]:
+    """Load ticker data from a JSON file."""
+    if filename is None:
+        filename = TICKERS_FILE
+    
+    filepath = os.path.join(DATA_DIR, filename)
+    
+    if not os.path.exists(filepath):
+        logger.warning(f"Tickers file {filepath} does not exist.")
+        return []
+    
+    with open(filepath, "r") as f:
+        tickers = json.load(f)
+    
+    logger.info(f"Loaded {len(tickers)} tickers from {filepath}")
+    return tickers
+
+
+def run_pipeline(
+    scrape_tickers: bool = False,
+    update_info: bool = False,
+    download_historical: bool = False,
+    mock_mode: bool = False,
+    max_tickers: Optional[int] = None,
+    tickers_file: Optional[str] = None,
+) -> None:
+    """Run the PSX data pipeline."""
+    tickers = []
+    
+    # Step 1: Scrape tickers from PSX
+    if scrape_tickers:
+        logger.info("Scraping tickers from PSX...")
+        tickers = fetch_tickers_from_psx(mock=mock_mode)
+        save_tickers(tickers, "tickers_scraped.json")
+    
+    # Step 2: Update ticker information
+    if update_info:
+        # Load tickers if we didn't scrape them
+        if not scrape_tickers or not tickers:
+            tickers = load_tickers(tickers_file)
+        
+        if not tickers:
+            logger.error("No tickers available. Run with --scrape-tickers first.")
+            return
+        
+        logger.info("Updating ticker information...")
+        updated_tickers, stats = update_ticker_info(tickers)
+        save_tickers(updated_tickers, "tickers_updated.json")
+        tickers = updated_tickers
+    
+    # Step 3: Download historical data for tickers
+    if download_historical:
+        # Load tickers if we didn't update them or scrape them
+        if not update_info and not scrape_tickers or not tickers:
+            tickers = load_tickers(tickers_file)
+        
+        if not tickers:
+            logger.error("No tickers available. Run with --scrape-tickers or --update-info first.")
+            return
+        
+        # Limit the number of tickers if specified
+        if max_tickers is not None and max_tickers > 0:
+            tickers = tickers[:max_tickers]
+            logger.info(f"Limited to {max_tickers} tickers for processing")
+        
+        # Get the list of ticker symbols
+        symbols = [ticker["symbol"] for ticker in tickers]
+        
+        logger.info(f"Downloading historical data for {len(symbols)} tickers...")
+        download_ticker_data(symbols, mock_mode=mock_mode)
 
 
 def main():
-    """Main function to run the PSX data pipeline."""
-    parser = setup_argparser()
+    """Main entry point for the PSX data pipeline."""
+    parser = argparse.ArgumentParser(description="PSX Data Pipeline")
+    
+    parser.add_argument(
+        "--scrape-tickers",
+        action="store_true",
+        help="Scrape tickers from PSX",
+    )
+    
+    parser.add_argument(
+        "--update-info",
+        action="store_true",
+        help="Update ticker information",
+    )
+    
+    parser.add_argument(
+        "--download-historical",
+        action="store_true",
+        help="Download historical data for tickers",
+    )
+    
+    parser.add_argument(
+        "--full-run",
+        action="store_true",
+        help="Run the full pipeline (scrape, update, download)",
+    )
+    
+    parser.add_argument(
+        "--mock",
+        action="store_true",
+        help="Use mock data for testing",
+    )
+    
+    parser.add_argument(
+        "--max-tickers",
+        type=int,
+        default=None,
+        help="Maximum number of tickers to process",
+    )
+    
+    parser.add_argument(
+        "--tickers-file",
+        type=str,
+        default=None,
+        help="JSON file containing tickers (in DATA_DIR)",
+    )
+    
+    parser.add_argument(
+        "--test-crawl4ai",
+        action="store_true",
+        help="Test the Crawl4AI library",
+    )
+    
     args = parser.parse_args()
     
-    logger.info(f"Starting PSX Data Pipeline v{__version__}")
+    # Create data directory if it doesn't exist
+    os.makedirs(DATA_DIR, exist_ok=True)
     
-    if args.sync_tickers:
-        logger.info("Starting ticker synchronization...")
-        success = sync_tickers()
-        if not success:
-            logger.error("Ticker synchronization failed")
-            return 1
+    # Test crawl4ai if requested
+    if args.test_crawl4ai:
+        test_crawl4ai()
+        return
     
-    if args.update_ticker_info:
-        logger.info("Starting ticker information update...")
-        success = update_ticker_info()
-        if not success:
-            logger.error("Ticker information update failed")
-            return 1
-            
-    if args.download_historical:
-        logger.info("Starting historical data download...")
-        # Future: Import and call historical data download function
-        # from psx_data_automation.scripts.download_data import download_historical
-        # download_historical()
-        logger.info("Historical data download not yet implemented")
+    # If full run, enable all steps
+    if args.full_run:
+        args.scrape_tickers = True
+        args.update_info = True
+        args.download_historical = True
     
-    if args.daily_update:
-        logger.info("Starting daily data update...")
-        # Future: Import and call daily update function
-        # from psx_data_automation.scripts.update_data import update_daily
-        # update_daily()
-        logger.info("Daily update not yet implemented")
+    # Make sure at least one step is specified
+    if not (args.scrape_tickers or args.update_info or args.download_historical):
+        parser.print_help()
+        logger.error("No action specified. Please specify at least one action.")
+        sys.exit(1)
     
-    if args.full_run or not any([args.sync_tickers, args.download_historical, args.daily_update, args.update_ticker_info]):
-        logger.info("Starting full pipeline run...")
-        
-        # Step 1: Sync tickers
-        logger.info("Step 1: Synchronizing tickers...")
-        success = sync_tickers()
-        if not success:
-            logger.error("Ticker synchronization failed - aborting pipeline")
-            return 1
-        
-        # Step 2: Update ticker information
-        logger.info("Step 2: Updating ticker names and sectors...")
-        success = update_ticker_info()
-        if not success:
-            logger.error("Ticker information update failed - continuing with pipeline")
-            
-        # Step 3: Download historical data (to be implemented)
-        logger.info("Step 3: Downloading historical data...")
-        logger.info("Historical data download not yet implemented")
-        
-        # Step 4: Daily update (to be implemented)
-        logger.info("Step 4: Performing daily update...")
-        logger.info("Daily update not yet implemented")
-    
-    logger.info("Pipeline execution completed")
-    return 0
+    # Run the pipeline
+    run_pipeline(
+        scrape_tickers=args.scrape_tickers,
+        update_info=args.update_info,
+        download_historical=args.download_historical,
+        mock_mode=args.mock,
+        max_tickers=args.max_tickers,
+        tickers_file=args.tickers_file,
+    )
 
 
 if __name__ == "__main__":
-    sys.exit(main()) 
+    main() 

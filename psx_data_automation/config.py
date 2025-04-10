@@ -29,6 +29,9 @@ PSX_BASE_URL = "https://dps.psx.com.pk"  # Base URL for PSX Official Website
 PSX_DATA_PORTAL_URL = "https://dps.psx.com.pk"  # Data Portal URL
 COMPANY_URL_TEMPLATE = "https://dps.psx.com.pk/company/"  # Updated URL for company pages
 
+# File paths
+TICKERS_FILE = "tickers.json"  # Default filename for storing ticker data
+
 # Ensure directories exist
 for directory in [DATA_DIR, METADATA_DIR, LOG_DIR]:
     os.makedirs(directory, exist_ok=True) 

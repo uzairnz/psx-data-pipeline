@@ -19,6 +19,7 @@ import time
 from datetime import datetime, timedelta
 from functools import wraps
 from pathlib import Path
+import random
 
 import requests
 from bs4 import BeautifulSoup
@@ -26,7 +27,7 @@ from bs4 import BeautifulSoup
 logger = logging.getLogger("psx_pipeline.utils")
 
 
-def retry(max_attempts=3, delay=1, backoff=2, exceptions=(Exception,)):
+def retry(max_attempts=5, delay=2, backoff=2, exceptions=(Exception,), max_delay=60):
     """
     Retry decorator for functions that might fail due to network issues.
     
@@ -35,6 +36,7 @@ def retry(max_attempts=3, delay=1, backoff=2, exceptions=(Exception,)):
         delay (int): Initial delay between retries in seconds
         backoff (int): Backoff multiplier for delay
         exceptions (tuple): Exceptions to catch and retry
+        max_delay (int): Maximum delay between retries in seconds
     
     Returns:
         function: Decorated function with retry capability
@@ -43,27 +45,53 @@ def retry(max_attempts=3, delay=1, backoff=2, exceptions=(Exception,)):
         @wraps(func)
         def wrapper(*args, **kwargs):
             m_attempts, m_delay = max_attempts, delay
+            last_exception = None
+            
             while m_attempts > 0:
                 try:
                     return func(*args, **kwargs)
                 except exceptions as e:
+                    last_exception = e
                     m_attempts -= 1
+                    
+                    # Check if this is a 500 error from requests
+                    is_server_error = False
+                    if isinstance(e, requests.HTTPError) and hasattr(e, 'response'):
+                        if e.response.status_code >= 500:
+                            is_server_error = True
+                    
+                    # If it's the last attempt, raise the exception
                     if m_attempts == 0:
-                        raise
+                        logger.error(f"Function {func.__name__} failed after {max_attempts} attempts: {str(e)}")
+                        raise last_exception
                     
-                    logger.warning(
-                        f"Function {func.__name__} failed with {str(e)}. "
-                        f"Retrying in {m_delay} seconds... "
-                        f"({max_attempts - m_attempts}/{max_attempts - 1})"
-                    )
+                    # Customize message based on error type
+                    if is_server_error:
+                        logger.warning(
+                            f"Server error in {func.__name__}: {str(e)}. "
+                            f"Retrying in {m_delay} seconds... "
+                            f"({max_attempts - m_attempts}/{max_attempts - 1})"
+                        )
+                    else:
+                        logger.warning(
+                            f"Function {func.__name__} failed with {str(e)}. "
+                            f"Retrying in {m_delay} seconds... "
+                            f"({max_attempts - m_attempts}/{max_attempts - 1})"
+                        )
                     
+                    # Sleep before retry
                     time.sleep(m_delay)
-                    m_delay *= backoff
+                    
+                    # Apply backoff, but cap at max_delay
+                    m_delay = min(m_delay * backoff, max_delay)
+                    
+                    # Add a small random factor to avoid thundering herd
+                    m_delay *= random.uniform(0.8, 1.2)
         return wrapper
     return decorator
 
 
-@retry(max_attempts=3, delay=2, exceptions=(requests.RequestException,))
+@retry(max_attempts=5, delay=2, backoff=2, exceptions=(requests.RequestException,), max_delay=60)
 def fetch_url(url, params=None, headers=None, timeout=30):
     """
     Fetch content from URL with retries and error handling.
@@ -88,10 +116,24 @@ def fetch_url(url, params=None, headers=None, timeout=30):
     if headers:
         default_headers.update(headers)
     
-    response = requests.get(url, params=params, headers=default_headers, timeout=timeout)
-    response.raise_for_status()
-    
-    return response.text
+    try:
+        response = requests.get(url, params=params, headers=default_headers, timeout=timeout)
+        response.raise_for_status()
+        return response.text
+    except requests.HTTPError as e:
+        # Log specific HTTP errors with more detail
+        if hasattr(e, 'response'):
+            logger.error(f"HTTP Error {e.response.status_code} when fetching {url}: {e.response.reason}")
+        raise
+    except requests.ConnectionError:
+        logger.error(f"Connection Error when fetching {url}. Check network or server availability.")
+        raise
+    except requests.Timeout:
+        logger.error(f"Timeout Error when fetching {url}. Server may be slow or unresponsive.")
+        raise
+    except requests.RequestException as e:
+        logger.error(f"Error fetching {url}: {str(e)}")
+        raise
 
 
 def parse_html(html_content, selector=None):

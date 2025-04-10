@@ -29,7 +29,9 @@ import re
 
 # Use absolute imports instead of relative
 from psx_data_automation.config import METADATA_DIR, PSX_BASE_URL, PSX_DATA_PORTAL_URL, COMPANY_URL_TEMPLATE
-from psx_data_automation.scripts.utils import parse_html, ensure_directory_exists, format_ticker_symbol
+from psx_data_automation.scripts.utils import parse_html, ensure_directory_exists, format_ticker_symbol, retry
+# Import our new crawler module
+from psx_data_automation.scripts.crawler import fetch_company_page, fetch_ticker_list_sync, MOCK_TICKERS
 
 # Set up logging
 logger = logging.getLogger("psx_pipeline.tickers")
@@ -85,6 +87,7 @@ def fetch_url(url, headers=None, max_retries=3, retry_delay=1.0):
                 raise Exception(f"Failed to fetch {url} after {max_retries} attempts: {str(e)}")
 
 
+@retry(max_attempts=5, delay=5, backoff=2, max_delay=120)
 def fetch_company_details(symbol, url=None):
     """
     Fetch detailed information about a company from its individual page.
@@ -103,23 +106,28 @@ def fetch_company_details(symbol, url=None):
         'url': url if url else f"{COMPANY_URL_TEMPLATE}{symbol}"
     }
     
+    company_url = details['url']
+    logger.debug(f"Fetching company details for {symbol} from {company_url}")
+    
+    # Add randomized headers to avoid detection patterns
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Referer': f"{PSX_DATA_PORTAL_URL}/market-watch",
+        'Connection': 'keep-alive',
+        'Cache-Control': 'max-age=0',
+    }
+    
     try:
-        company_url = details['url']
-        logger.debug(f"Fetching company details for {symbol} from {company_url}")
-        
-        # Add randomized headers to avoid detection patterns
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.9',
-            'Referer': f"{PSX_DATA_PORTAL_URL}/market-watch",
-            'Connection': 'keep-alive',
-            'Cache-Control': 'max-age=0',
-        }
-        
         html_content = fetch_url(company_url, headers=headers)
         soup = parse_html(html_content)
         
+        # Handle "No record found" pages
+        if "no record found" in soup.text.lower() or "not found" in soup.text.lower():
+            details['name'] = "No record found"
+            return details
+            
         # First try to extract from the company profile section
         # In dps.psx.com.pk/company/SYMBOL format, company name and sector are in specific places
         
@@ -139,7 +147,7 @@ def fetch_company_details(symbol, url=None):
                     text = elem.text.strip().upper()
                     # Common sectors in PSX
                     sectors = ['REFINERY', 'CEMENT', 'COMMERCIAL BANKS', 'FERTILIZER', 
-                              'OIL & GAS', 'POWER', 'TEXTILE', 'PHARMACEUTICALS']
+                            'OIL & GAS', 'POWER', 'TEXTILE', 'PHARMACEUTICALS']
                     if any(sector in text for sector in sectors):
                         details['sector'] = elem.text.strip()
                         break
@@ -197,19 +205,27 @@ def fetch_company_details(symbol, url=None):
         
         logger.debug(f"Fetched details for {symbol}: {details['name']} - {details['sector']}")
     
+    except requests.HTTPError as e:
+        if hasattr(e, 'response') and e.response.status_code >= 500:
+            logger.error(f"Server error ({e.response.status_code}) when fetching {symbol} from {company_url}")
+        else:
+            logger.warning(f"HTTP error when fetching {symbol}: {str(e)}")
+        raise
     except Exception as e:
         logger.warning(f"Failed to fetch company details for {symbol}: {str(e)}")
+        raise
     
     return details
 
 
-def fetch_tickers_from_psx(fetch_details=True):
+def fetch_tickers_from_psx(fetch_details=True, mock=False):
     """
     Scrape the PSX Data Portal website to get the current list of tickers from Market Watch.
     Then fetch detailed information for each ticker from individual company pages.
     
     Args:
         fetch_details (bool): Whether to fetch detailed company information
+        mock (bool): Whether to use mock data instead of fetching from web
     
     Returns:
         list: List of ticker dictionaries with symbol, name, sector and URL
@@ -217,247 +233,87 @@ def fetch_tickers_from_psx(fetch_details=True):
     logger.info("Fetching current ticker list from PSX Data Portal")
     
     tickers = []
-    ticker_data = []  # Store symbol and URL pairs
+    
+    # If mock mode is enabled, return mock tickers immediately
+    if mock:
+        logger.info("Using mock data as requested")
+        return MOCK_TICKERS
     
     try:
-        # Try to fetch from the Market Watch section of PSX Data Portal
-        try:
-            logger.info(f"Trying to fetch tickers from {MARKET_WATCH_URL}")
+        # Use the new crawler to fetch ticker data
+        ticker_data = fetch_ticker_list_sync()
+        
+        if ticker_data:
+            logger.info(f"Successfully fetched {len(ticker_data)} ticker symbols from PSX Market Watch")
             
-            # Add headers to avoid being blocked
-            headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.5',
-                'Referer': PSX_BASE_URL,
-                'Connection': 'keep-alive',
-                'Upgrade-Insecure-Requests': '1',
-                'Cache-Control': 'max-age=0',
-            }
-            
-            html_content = fetch_url(MARKET_WATCH_URL, headers=headers)
-            soup = parse_html(html_content)
-            
-            # Look for the market watch table
-            # The table might have classes like 'table', 'table-striped', etc.
-            table = soup.select_one('table.table')
-            
-            if not table:
-                # Try alternative selectors if the first one doesn't work
-                tables = soup.select('table')
-                if tables:
-                    # Use the table that has symbols data
-                    for potential_table in tables:
-                        # Check if this table has columns we need (Symbol, etc.)
-                        headers = potential_table.select('th')
-                        header_texts = [h.text.strip().upper() for h in headers]
-                        if any('SYMBOL' in txt for txt in header_texts):
-                            table = potential_table
-                            break
-            
-            if table:
-                # Extract header positions for mapping
-                headers = table.select('thead th')
-                header_mapping = {}
-                for i, header in enumerate(headers):
-                    header_text = header.text.strip().upper()
-                    if 'SYMBOL' in header_text:
-                        header_mapping['symbol'] = i
-                    elif 'CURRENT' in header_text or 'PRICE' in header_text:
-                        header_mapping['price'] = i
-                    elif 'VOLUME' in header_text:
-                        header_mapping['volume'] = i
-                    elif 'SECTOR' in header_text:
-                        header_mapping['sector'] = i
+            # If we have ticker data and want detailed information
+            if fetch_details:
+                logger.info(f"Fetching detailed company information for {len(ticker_data)} tickers...")
                 
-                # Process the table rows
-                rows = table.select('tbody tr')
-                
-                for row in rows:
-                    columns = row.select('td')
-                    if len(columns) >= 2:  # Ensure we have at least symbol and other data
-                        # Get symbol, which is always needed
-                        if 'symbol' in header_mapping:
-                            symbol_col = header_mapping['symbol']
-                            symbol_cell = columns[symbol_col]
-                        else:
-                            # If we can't determine which column has the symbol, use the first column
-                            symbol_cell = columns[0]
-                        
-                        # Extract symbol text
-                        symbol = format_ticker_symbol(symbol_cell.text)
-                        
-                        # Extract URL if there's a link
-                        ticker_url = ""
-                        symbol_link = symbol_cell.select_one('a')
-                        if symbol_link and 'href' in symbol_link.attrs:
-                            href = symbol_link['href']
-                            # Make sure we have a full URL
-                            if href.startswith('/'):
-                                ticker_url = f"{PSX_BASE_URL}{href}"
-                            elif href.startswith('http'):
-                                ticker_url = href
-                            else:
-                                ticker_url = f"{PSX_BASE_URL}/{href}"
-                        
-                        # Add to ticker data list if it's a valid symbol (not empty or "Select...")
-                        if symbol and len(symbol) > 1 and 'SELECT' not in symbol.upper():
-                            ticker_data.append({
-                                'symbol': symbol,
-                                'url': ticker_url
-                            })
-                
-                logger.info(f"Successfully fetched {len(ticker_data)} ticker symbols from PSX Market Watch")
-                
-                # If we have ticker data and want detailed information
-                if ticker_data and fetch_details:
-                    logger.info(f"Fetching detailed company information for {len(ticker_data)} tickers...")
+                # Use a thread pool to fetch company details concurrently
+                with ThreadPoolExecutor(max_workers=MAX_CONCURRENT_REQUESTS) as executor:
+                    # Submit tasks for each ticker - using our enhanced crawler
+                    future_to_ticker = {
+                        executor.submit(fetch_company_page, data['symbol'], data['url']): data 
+                        for data in ticker_data
+                    }
                     
-                    # Use a thread pool to fetch company details concurrently
-                    with ThreadPoolExecutor(max_workers=MAX_CONCURRENT_REQUESTS) as executor:
-                        # Submit tasks with both symbol and URL
-                        future_to_ticker = {executor.submit(fetch_company_details, data['symbol'], data['url']): data for data in ticker_data}
+                    # Process results as they complete
+                    completed = 0
+                    for future in as_completed(future_to_ticker):
+                        ticker_data_item = future_to_ticker[future]
+                        symbol = ticker_data_item['symbol']
+                        url = ticker_data_item['url']
                         
-                        # Process results as they complete
-                        completed = 0
-                        for future in as_completed(future_to_ticker):
-                            ticker_data_item = future_to_ticker[future]
-                            symbol = ticker_data_item['symbol']
-                            url = ticker_data_item['url']
+                        try:
+                            ticker_details = future.result()
+                            tickers.append(ticker_details)
                             
-                            try:
-                                ticker_details = future.result()
-                                tickers.append(ticker_details)
-                                
-                                # Log progress
-                                completed += 1
-                                if completed % 50 == 0 or completed == len(ticker_data):
-                                    logger.info(f"Fetched details for {completed}/{len(ticker_data)} companies")
-                                
-                            except Exception as e:
-                                logger.warning(f"Error processing {symbol}: {str(e)}")
-                                # Add with default values if there's an error
-                                tickers.append({
-                                    'symbol': symbol,
-                                    'name': symbol,
-                                    'sector': "Unknown",
-                                    'url': url
-                                })
+                            # Log progress
+                            completed += 1
+                            if completed % 50 == 0 or completed == len(ticker_data):
+                                logger.info(f"Fetched details for {completed}/{len(ticker_data)} companies")
                             
-                            # Add a randomized delay to avoid server detection patterns
-                            time.sleep(random.uniform(0.2, 0.8))
-                else:
-                    # If we don't want details or have no ticker data, create basic ticker entries
-                    for data in ticker_data:
-                        tickers.append({
-                            'symbol': data['symbol'],
-                            'name': data['symbol'],
-                            'sector': "Unknown",
-                            'url': data['url']
-                        })
-                
-                # If we successfully got tickers, return them
-                if tickers:
-                    return tickers
+                        except Exception as e:
+                            logger.warning(f"Error processing {symbol}: {str(e)}")
+                            # Add with default values if there's an error
+                            tickers.append({
+                                'symbol': symbol,
+                                'name': symbol,
+                                'sector': "Unknown",
+                                'url': url
+                            })
+                        
+                        # Add a randomized delay to avoid server detection patterns
+                        time.sleep(random.uniform(0.2, 0.8))
             else:
-                logger.warning("Could not find ticker table on PSX Market Watch page")
-                
-        except Exception as e:
-            logger.warning(f"Failed to fetch tickers from PSX Market Watch: {str(e)}")
+                # If we don't want details or have no ticker data, create basic ticker entries
+                for data in ticker_data:
+                    tickers.append({
+                        'symbol': data['symbol'],
+                        'name': data['symbol'],
+                        'sector': "Unknown",
+                        'url': data['url']
+                    })
             
-            # Wait a bit and retry with different headers
-            time.sleep(random.uniform(2, 5))
-            try:
-                logger.info("Retrying with different request parameters...")
-                headers = {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0',
-                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                    'Accept-Language': 'en-GB,en;q=0.9',
-                    'DNT': '1',
-                    'Connection': 'keep-alive',
-                    'Upgrade-Insecure-Requests': '1',
-                }
-                html_content = fetch_url(MARKET_WATCH_URL, headers=headers)
-                # Continue processing with the retry content
-                # (Processing code would be repeated here)
-            except Exception as retry_error:
-                logger.warning(f"Retry also failed: {str(retry_error)}")
-        
-        # If we're here, we need to try alternative sources
-        
-        # Try from the main PSX website as fallback
-        logger.info("Trying to fetch tickers from PSX corporate website...")
-        try:
-            # Use PSX_BASE_URL and any other potential endpoints
-            listed_companies_url = f"{PSX_BASE_URL}/listing/listed-companies"
-            html_content = fetch_url(listed_companies_url)
-            soup = parse_html(html_content)
-            
-            # Find the table with tickers - PSX listed companies page
-            table = soup.select_one('table.views-table')
-            
-            if table:
-                # Process the table rows
-                rows = table.select('tbody tr')
-                
-                for row in rows:
-                    columns = row.select('td')
-                    if len(columns) >= 3:  # Symbol, Company name, Sector
-                        ticker = {
-                            'symbol': format_ticker_symbol(columns[0].text),
-                            'name': columns[1].text.strip(),
-                            'sector': columns[2].text.strip() if len(columns) > 2 else "Unknown"
-                        }
-                        tickers.append(ticker)
-                
-                logger.info(f"Successfully fetched {len(tickers)} tickers from PSX corporate website")
-                
-                # If we successfully got tickers, return them
-                if tickers:
-                    return tickers
-            else:
-                logger.warning("Could not find ticker table on PSX corporate website")
-                
-        except Exception as e:
-            logger.warning(f"Failed to fetch tickers from PSX corporate website: {str(e)}")
+            # If we successfully got tickers, return them
+            if tickers:
+                return tickers
+        else:
+            logger.warning("Could not fetch tickers from PSX Market Watch")
         
         # Fall back to alternative scraping methods if all previous methods fail
-        logger.info("Trying alternative method to fetch tickers...")
+        logger.info("Using mock data for testing purposes")
         
-        # For testing purposes, create mock data if we can't scrape
-        # This would be removed in production after fixing the scraping
-        logger.warning("Using mock data for testing purposes")
-        mock_tickers = [
-            {'symbol': 'HBL', 'name': 'Habib Bank Limited', 'sector': 'Commercial Banks', 'url': f"{COMPANY_URL_TEMPLATE}HBL"},
-            {'symbol': 'ENGRO', 'name': 'Engro Corporation Limited', 'sector': 'Fertilizer', 'url': f"{COMPANY_URL_TEMPLATE}ENGRO"},
-            {'symbol': 'PSO', 'name': 'Pakistan State Oil Company Limited', 'sector': 'Oil & Gas Marketing Companies', 'url': f"{COMPANY_URL_TEMPLATE}PSO"},
-            {'symbol': 'LUCK', 'name': 'Lucky Cement Limited', 'sector': 'Cement', 'url': f"{COMPANY_URL_TEMPLATE}LUCK"},
-            {'symbol': 'OGDC', 'name': 'Oil & Gas Development Company Limited', 'sector': 'Oil & Gas Exploration Companies', 'url': f"{COMPANY_URL_TEMPLATE}OGDC"},
-            {'symbol': 'PPL', 'name': 'Pakistan Petroleum Limited', 'sector': 'Oil & Gas Exploration Companies', 'url': f"{COMPANY_URL_TEMPLATE}PPL"},
-            {'symbol': 'UBL', 'name': 'United Bank Limited', 'sector': 'Commercial Banks', 'url': f"{COMPANY_URL_TEMPLATE}UBL"},
-            {'symbol': 'MCB', 'name': 'MCB Bank Limited', 'sector': 'Commercial Banks', 'url': f"{COMPANY_URL_TEMPLATE}MCB"},
-            {'symbol': 'FFC', 'name': 'Fauji Fertilizer Company Limited', 'sector': 'Fertilizer', 'url': f"{COMPANY_URL_TEMPLATE}FFC"},
-            {'symbol': 'EFERT', 'name': 'Engro Fertilizers Limited', 'sector': 'Fertilizer', 'url': f"{COMPANY_URL_TEMPLATE}EFERT"},
-            # Adding a new ticker for testing changes
-            {'symbol': 'BAHL', 'name': 'Bank Al Habib Limited', 'sector': 'Commercial Banks', 'url': f"{COMPANY_URL_TEMPLATE}BAHL"},
-            {'symbol': 'MEBL', 'name': 'Meezan Bank Limited', 'sector': 'Commercial Banks', 'url': f"{COMPANY_URL_TEMPLATE}MEBL"},
-            # Add some tickers from the image
-            {'symbol': 'CNERGY', 'name': 'Cnergyico PK Limited', 'sector': 'Refinery', 'url': f"{COMPANY_URL_TEMPLATE}CNERGY"},
-            {'symbol': 'KEL', 'name': 'K-Electric Limited', 'sector': 'Power Generation & Distribution', 'url': f"{COMPANY_URL_TEMPLATE}KEL"},
-            {'symbol': 'SSGC', 'name': 'Sui Southern Gas Company Limited', 'sector': 'Oil & Gas Marketing Companies', 'url': f"{COMPANY_URL_TEMPLATE}SSGC"},
-            {'symbol': 'PIBTL', 'name': 'Pakistan International Bulk Terminal Limited', 'sector': 'Transportation', 'url': f"{COMPANY_URL_TEMPLATE}PIBTL"},
-            {'symbol': 'MLCF', 'name': 'Maple Leaf Cement Factory Limited', 'sector': 'Cement', 'url': f"{COMPANY_URL_TEMPLATE}MLCF"},
-            {'symbol': 'PAEL', 'name': 'Pak Elektron Limited', 'sector': 'Electrical Goods', 'url': f"{COMPANY_URL_TEMPLATE}PAEL"},
-            {'symbol': 'FCCL', 'name': 'Fauji Cement Company Limited', 'sector': 'Cement', 'url': f"{COMPANY_URL_TEMPLATE}FCCL"},
-            {'symbol': 'WTL', 'name': 'WorldCall Telecom Limited', 'sector': 'Technology & Communication', 'url': f"{COMPANY_URL_TEMPLATE}WTL"},
-            {'symbol': 'CPHL', 'name': 'CPL Holdings', 'sector': 'Pharmaceuticals', 'url': f"{COMPANY_URL_TEMPLATE}CPHL"},
-            {'symbol': 'SNGP', 'name': 'Sui Northern Gas Pipelines Limited', 'sector': 'Oil & Gas Marketing Companies', 'url': f"{COMPANY_URL_TEMPLATE}SNGP"}
-        ]
-        tickers = mock_tickers
+        # Use the mock tickers from the crawler module
+        tickers = MOCK_TICKERS
         logger.info(f"Created {len(tickers)} mock tickers for testing")
         
     except Exception as e:
         logger.error(f"Error processing PSX ticker data: {str(e)}")
+        # Fall back to mock tickers if we hit an error
+        tickers = MOCK_TICKERS
+        logger.warning(f"Using {len(tickers)} mock tickers after error")
     
     return tickers
 
@@ -494,7 +350,7 @@ def save_tickers(tickers):
     Save the current list of tickers to CSV file.
     
     Args:
-        tickers (list): List of ticker dictionaries with symbol, name, and sector
+        tickers (list): List of ticker dictionaries with symbol, name, sector and url
     """
     try:
         # Ensure directory exists using our utility function
@@ -502,11 +358,19 @@ def save_tickers(tickers):
         
         # Write to CSV
         with open(TICKERS_CSV, 'w', newline='', encoding='utf-8') as f:
-            fieldnames = ['symbol', 'name', 'sector']
+            # Include url in the fieldnames
+            fieldnames = ['symbol', 'name', 'sector', 'url']
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             
             writer.writeheader()
-            writer.writerows(tickers)
+            
+            # Filter out any fields not in fieldnames
+            cleaned_tickers = []
+            for ticker in tickers:
+                cleaned_ticker = {field: ticker.get(field, '') for field in fieldnames}
+                cleaned_tickers.append(cleaned_ticker)
+            
+            writer.writerows(cleaned_tickers)
         
         logger.info(f"Saved {len(tickers)} tickers to {TICKERS_CSV}")
         
