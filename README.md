@@ -21,21 +21,22 @@ This project automates the full pipeline for collecting, updating, and maintaini
 ## 🌐 Project Structure
 ```
 psx_data_automation/
-├── data/                       # Folder for storing OHLC data per ticker
-│   ├── HBL.csv
+├── data/                       # Folder for storing OHLC data and ticker information
+│   ├── tickers_YYYYMMDD.json   # Ticker list with names, sectors, and URLs
+│   ├── tickers_YYYYMMDD_updated.json # Updated ticker information
+│   ├── test_tickers_YYYYMMDD.json # Test ticker data
+│   ├── HBL.csv                 # OHLC data for each ticker (future)
 │   ├── ENGRO.csv
 │   └── ...
-├── metadata/
-│   ├── all_tickers.csv        # Latest list of tickers from PSX
-│   └── ticker_changes.log     # History of additions/removals/renames
 ├── logs/
 │   └── update_YYYY-MM-DD.log  # Daily update logs
 ├── scripts/
 │   ├── scrape_tickers.py      # Ticker synchronization logic
-│   ├── download_data.py       # Download OHLC data per ticker
-│   ├── update_data.py         # Update existing data daily
-│   └── utils.py               # Shared utility functions
-├── config.py                  # Configurable parameters (dates, paths, etc.)
+│   ├── update_ticker_info.py  # Update ticker names, sectors and URLs
+│   ├── download_data.py       # Download OHLC data per ticker (future)
+│   ├── update_data.py         # Update existing data daily (future)
+│   └── test_ticker_update.py  # Test script for ticker updates
+├── config.py                  # Configurable parameters (dates, paths, URLs)
 ├── main.py                    # Unified runner for full pipeline
 └── README.md
 ```
@@ -52,9 +53,10 @@ psx_data_automation/
 
 ### Phase 2: Ticker Management System
 - [x] Implement `scrape_tickers.py` to fetch live ticker list from PSX
-- [x] Compare new list with old one from `metadata/all_tickers.csv`
+- [x] Compare new list with old one from saved ticker data
 - [x] Log changes: additions, deletions, and renames
-- [x] Update ticker CSV list accordingly
+- [x] Update ticker information accordingly
+- [x] Use `COMPANY_URL_TEMPLATE` from config for consistent URL patterns
 
 ### Phase 3: Historical Data Collection
 - [ ] Build `download_data.py` to fetch 10 years of daily OHLC data per ticker
@@ -82,7 +84,7 @@ psx_data_automation/
 - [ ] Optional: Email or log-based alert system
 
 ### Phase 7: Documentation
-- [ ] Write high-level README
+- [x] Write high-level README
 - [ ] Add usage examples for each module
 - [ ] Add contributor guide and roadmap
 
@@ -103,7 +105,7 @@ psx_data_automation/
 
 ## 🔧 Tech Stack
 - Python 3.10+
-- Libraries: `pandas`, `requests`, `beautifulsoup4`, `schedule`, `argparse`
+- Libraries: `pandas`, `requests`, `beautifulsoup4`, `logging`, `argparse`
 - Version Control: Git + GitHub
 - Optional: SQLite or Parquet backend for large-scale use
 
@@ -139,14 +141,25 @@ To verify the installation, run:
 conda activate psx
 
 # Run the main script with the version flag
-python psx_data_automation/main.py --version
+python -m psx_data_automation.main --version
 ```
 
-### Development
-For development, you can now proceed to implement the modules in the `scripts` directory:
-- `scrape_tickers.py` - Fetch and manage ticker lists
-- `download_data.py` - Download historical data
-- `update_data.py` - Daily updates for existing data
+### Running the Pipeline
+```bash
+# Run the full pipeline
+python -m psx_data_automation.main --full-run
+
+# Just synchronize tickers
+python -m psx_data_automation.main --sync-tickers
+```
+
+---
+
+## 🔄 URL Pattern Changes
+The project now uses a standardized URL pattern for company information:
+- The URL pattern is defined in `config.py` as `COMPANY_URL_TEMPLATE`
+- The current pattern is: `https://dps.psx.com.pk/company/{symbol}`
+- If the PSX website changes its structure, only this configuration needs to be updated
 
 ---
 
@@ -156,6 +169,7 @@ For development, you can now proceed to implement the modules in the `scripts` d
 - Archive removed/delisted tickers
 - Export to Parquet or Feather for faster I/O
 - Add backfill checks for recent missing data
+- Handle tickers with non-standard URL patterns or errors
 
 ---
 

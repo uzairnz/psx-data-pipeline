@@ -25,8 +25,9 @@ MARKET_CLOSE_HOUR = 18  # 6:00 PM Pakistan Time
 
 # URL settings
 # Update to the correct PSX website URLs
-PSX_BASE_URL = "https://www.psx.com.pk"  # Base URL for PSX Official Website
+PSX_BASE_URL = "https://dps.psx.com.pk"  # Base URL for PSX Official Website
 PSX_DATA_PORTAL_URL = "https://dps.psx.com.pk"  # Data Portal URL
+COMPANY_URL_TEMPLATE = "https://dps.psx.com.pk/company/"  # Updated URL for company pages
 
 # Ensure directories exist
 for directory in [DATA_DIR, METADATA_DIR, LOG_DIR]:

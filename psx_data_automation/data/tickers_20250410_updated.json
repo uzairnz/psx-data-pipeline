@@ -1,0 +1,2702 @@
+[
+  {
+    "symbol": "MLCF",
+    "name": "Maple Leaf Cement Factory Limited",
+    "sector": "Cement",
+    "url": "https://dps.psx.com.pk/company/MLCF"
+  },
+  {
+    "symbol": "SNGP",
+    "name": "Sui Northern Gas Pipelines Limited",
+    "sector": "Oil & Gas Marketing Companies",
+    "url": "https://dps.psx.com.pk/company/SNGP"
+  },
+  {
+    "symbol": "CNERGY",
+    "name": "Cnergyico PK Limited",
+    "sector": "Refinery",
+    "url": "https://dps.psx.com.pk/company/CNERGY"
+  },
+  {
+    "symbol": "FCCL",
+    "name": "Fauji Cement Company Limited",
+    "sector": "Cement",
+    "url": "https://dps.psx.com.pk/company/FCCL"
+  },
+  {
+    "symbol": "WTL",
+    "name": "WorldCall Telecom Limited",
+    "sector": "Technology & Communication",
+    "url": "https://dps.psx.com.pk/company/WTL"
+  },
+  {
+    "symbol": "PIBTL",
+    "name": "Pakistan International Bulk Terminal Limited",
+    "sector": "Transportation",
+    "url": "https://dps.psx.com.pk/company/PIBTL"
+  },
+  {
+    "symbol": "SSGC",
+    "name": "Sui Southern Gas Company Limited",
+    "sector": "Oil & Gas Marketing Companies",
+    "url": "https://dps.psx.com.pk/company/SSGC"
+  },
+  {
+    "symbol": "KEL",
+    "name": "K-Electric Limited",
+    "sector": "Power Generation & Distribution",
+    "url": "https://dps.psx.com.pk/company/KEL"
+  },
+  {
+    "symbol": "PAEL",
+    "name": "Pak Elektron Limited",
+    "sector": "Electrical Goods",
+    "url": "https://dps.psx.com.pk/company/PAEL"
+  },
+  {
+    "symbol": "CPHL",
+    "name": "CPL Holdings",
+    "sector": "Pharmaceuticals",
+    "url": "https://dps.psx.com.pk/company/CPHL"
+  },
+  {
+    "symbol": "LPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/LPL"
+  },
+  {
+    "symbol": "PRL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PRL"
+  },
+  {
+    "symbol": "TRG",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TRG"
+  },
+  {
+    "symbol": "PIAHCLA",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PIAHCLA"
+  },
+  {
+    "symbol": "PREMA",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PREMA"
+  },
+  {
+    "symbol": "BAFL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BAFL"
+  },
+  {
+    "symbol": "POWER",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/POWER"
+  },
+  {
+    "symbol": "DGKC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DGKC"
+  },
+  {
+    "symbol": "FFL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FFL"
+  },
+  {
+    "symbol": "PSO",
+    "name": "Pakistan State Oil Company Limited",
+    "sector": "Oil & Gas Marketing Companies",
+    "url": "https://dps.psx.com.pk/company/PSO"
+  },
+  {
+    "symbol": "PSX",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PSX"
+  },
+  {
+    "symbol": "HUBC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HUBC"
+  },
+  {
+    "symbol": "OGDC",
+    "name": "Oil & Gas Development Company Limited",
+    "sector": "Oil & Gas Exploration Companies",
+    "url": "https://dps.psx.com.pk/company/OGDC"
+  },
+  {
+    "symbol": "TREET",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TREET"
+  },
+  {
+    "symbol": "PTC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PTC"
+  },
+  {
+    "symbol": "KOSM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/KOSM"
+  },
+  {
+    "symbol": "SEARL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SEARL"
+  },
+  {
+    "symbol": "MARI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MARI"
+  },
+  {
+    "symbol": "PPL",
+    "name": "Pakistan Petroleum Limited",
+    "sector": "Oil & Gas Exploration Companies",
+    "url": "https://dps.psx.com.pk/company/PPL"
+  },
+  {
+    "symbol": "SPWL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SPWL"
+  },
+  {
+    "symbol": "AIRLINK",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AIRLINK"
+  },
+  {
+    "symbol": "TELE",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TELE"
+  },
+  {
+    "symbol": "DFML",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DFML"
+  },
+  {
+    "symbol": "BBFL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BBFL"
+  },
+  {
+    "symbol": "SYM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SYM"
+  },
+  {
+    "symbol": "EFERT",
+    "name": "Engro Fertilizers Limited",
+    "sector": "Fertilizer",
+    "url": "https://dps.psx.com.pk/company/EFERT"
+  },
+  {
+    "symbol": "ILP",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ILP"
+  },
+  {
+    "symbol": "FCL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FCL"
+  },
+  {
+    "symbol": "BOPXD",
+    "name": "BOPXD",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BOPXD"
+  },
+  {
+    "symbol": "NPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NPL"
+  },
+  {
+    "symbol": "FABL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FABL"
+  },
+  {
+    "symbol": "NBPXD",
+    "name": "NBPXD",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NBPXD"
+  },
+  {
+    "symbol": "NETSOL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NETSOL"
+  },
+  {
+    "symbol": "ENGROH",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ENGROH"
+  },
+  {
+    "symbol": "TBL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TBL"
+  },
+  {
+    "symbol": "GGGL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GGGL"
+  },
+  {
+    "symbol": "HASCOLNC",
+    "name": "HASCOLNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HASCOLNC"
+  },
+  {
+    "symbol": "AVN",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AVN"
+  },
+  {
+    "symbol": "BFAGRO",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BFAGRO"
+  },
+  {
+    "symbol": "JSMFETFXD",
+    "name": "JSMFETFXD",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/JSMFETFXD"
+  },
+  {
+    "symbol": "FLYNG",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FLYNG"
+  },
+  {
+    "symbol": "OBOYR2",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/OBOYR2"
+  },
+  {
+    "symbol": "WAVES",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/WAVES"
+  },
+  {
+    "symbol": "KOHC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/KOHC"
+  },
+  {
+    "symbol": "WAVESAPP",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/WAVESAPP"
+  },
+  {
+    "symbol": "ASL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ASL"
+  },
+  {
+    "symbol": "DSLNC",
+    "name": "DSLNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DSLNC"
+  },
+  {
+    "symbol": "AGHA",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AGHA"
+  },
+  {
+    "symbol": "STPLNC",
+    "name": "STPLNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/STPLNC"
+  },
+  {
+    "symbol": "AKBL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AKBL"
+  },
+  {
+    "symbol": "IMAGE",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/IMAGE"
+  },
+  {
+    "symbol": "HBLXD",
+    "name": "HBLXD",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HBLXD"
+  },
+  {
+    "symbol": "UBL",
+    "name": "United Bank Limited",
+    "sector": "Commercial Banks",
+    "url": "https://dps.psx.com.pk/company/UBL"
+  },
+  {
+    "symbol": "NML",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NML"
+  },
+  {
+    "symbol": "ASTL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ASTL"
+  },
+  {
+    "symbol": "TPLP",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TPLP"
+  },
+  {
+    "symbol": "GATM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GATM"
+  },
+  {
+    "symbol": "BML",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BML"
+  },
+  {
+    "symbol": "GAL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GAL"
+  },
+  {
+    "symbol": "AHCL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AHCL"
+  },
+  {
+    "symbol": "PACE",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PACE"
+  },
+  {
+    "symbol": "AICL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AICL"
+  },
+  {
+    "symbol": "LOTCHEM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/LOTCHEM"
+  },
+  {
+    "symbol": "TOMCL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TOMCL"
+  },
+  {
+    "symbol": "GHNI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GHNI"
+  },
+  {
+    "symbol": "PIOC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PIOC"
+  },
+  {
+    "symbol": "DOL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DOL"
+  },
+  {
+    "symbol": "HUMNL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HUMNL"
+  },
+  {
+    "symbol": "NCPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NCPL"
+  },
+  {
+    "symbol": "NRSL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NRSL"
+  },
+  {
+    "symbol": "JSBL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/JSBL"
+  },
+  {
+    "symbol": "BIPLXD",
+    "name": "BIPLXD",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BIPLXD"
+  },
+  {
+    "symbol": "AGL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AGL"
+  },
+  {
+    "symbol": "KAPCO",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/KAPCO"
+  },
+  {
+    "symbol": "BNL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BNL"
+  },
+  {
+    "symbol": "DCL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DCL"
+  },
+  {
+    "symbol": "GCILSD",
+    "name": "GCILSD",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GCILSD"
+  },
+  {
+    "symbol": "FFC",
+    "name": "Fauji Fertilizer Company Limited",
+    "sector": "Fertilizer",
+    "url": "https://dps.psx.com.pk/company/FFC"
+  },
+  {
+    "symbol": "SAZEW",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SAZEW"
+  },
+  {
+    "symbol": "PAKRI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PAKRI"
+  },
+  {
+    "symbol": "ZAL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ZAL"
+  },
+  {
+    "symbol": "FCEPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FCEPL"
+  },
+  {
+    "symbol": "EPQL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/EPQL"
+  },
+  {
+    "symbol": "ANL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ANL"
+  },
+  {
+    "symbol": "FATIMAXD",
+    "name": "FATIMAXD",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FATIMAXD"
+  },
+  {
+    "symbol": "EPCL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/EPCL"
+  },
+  {
+    "symbol": "LUCK",
+    "name": "Lucky Cement Limited",
+    "sector": "Cement",
+    "url": "https://dps.psx.com.pk/company/LUCK"
+  },
+  {
+    "symbol": "BFBIO",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BFBIO"
+  },
+  {
+    "symbol": "TCORP",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TCORP"
+  },
+  {
+    "symbol": "SPEL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SPEL"
+  },
+  {
+    "symbol": "ATRL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ATRL"
+  },
+  {
+    "symbol": "QUICE",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/QUICE"
+  },
+  {
+    "symbol": "ALTN",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ALTN"
+  },
+  {
+    "symbol": "GGL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GGL"
+  },
+  {
+    "symbol": "ACPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ACPL"
+  },
+  {
+    "symbol": "GLAXO",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GLAXO"
+  },
+  {
+    "symbol": "MDTL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MDTL"
+  },
+  {
+    "symbol": "NRL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NRL"
+  },
+  {
+    "symbol": "SLGL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SLGL"
+  },
+  {
+    "symbol": "MEBLXD",
+    "name": "MEBLXD",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MEBLXD"
+  },
+  {
+    "symbol": "GWLC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GWLC"
+  },
+  {
+    "symbol": "TGL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TGL"
+  },
+  {
+    "symbol": "GHGL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GHGL"
+  },
+  {
+    "symbol": "MZNPETF",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MZNPETF"
+  },
+  {
+    "symbol": "LOADS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/LOADS"
+  },
+  {
+    "symbol": "CASH",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CASH"
+  },
+  {
+    "symbol": "UNITY",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/UNITY"
+  },
+  {
+    "symbol": "OCTOPUS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/OCTOPUS"
+  },
+  {
+    "symbol": "NCL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NCL"
+  },
+  {
+    "symbol": "YOUW",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/YOUW"
+  },
+  {
+    "symbol": "HICL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HICL"
+  },
+  {
+    "symbol": "PABC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PABC"
+  },
+  {
+    "symbol": "MCB",
+    "name": "MCB Bank Limited",
+    "sector": "Commercial Banks",
+    "url": "https://dps.psx.com.pk/company/MCB"
+  },
+  {
+    "symbol": "PMI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PMI"
+  },
+  {
+    "symbol": "BGL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BGL"
+  },
+  {
+    "symbol": "KSBP",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/KSBP"
+  },
+  {
+    "symbol": "CSAP",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CSAP"
+  },
+  {
+    "symbol": "GAMON",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GAMON"
+  },
+  {
+    "symbol": "THCCL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/THCCL"
+  },
+  {
+    "symbol": "TPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TPL"
+  },
+  {
+    "symbol": "FNEL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FNEL"
+  },
+  {
+    "symbol": "SYS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SYS"
+  },
+  {
+    "symbol": "FCSC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FCSC"
+  },
+  {
+    "symbol": "DCRXD",
+    "name": "DCRXD",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DCRXD"
+  },
+  {
+    "symbol": "HCAR",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HCAR"
+  },
+  {
+    "symbol": "BAHL",
+    "name": "Bank Al Habib Limited",
+    "sector": "Commercial Banks",
+    "url": "https://dps.psx.com.pk/company/BAHL"
+  },
+  {
+    "symbol": "GTYR",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GTYR"
+  },
+  {
+    "symbol": "IPAK",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/IPAK"
+  },
+  {
+    "symbol": "CHCC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CHCC"
+  },
+  {
+    "symbol": "MIIETF",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MIIETF"
+  },
+  {
+    "symbol": "MTL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MTL"
+  },
+  {
+    "symbol": "BECO",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BECO"
+  },
+  {
+    "symbol": "SNBL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SNBL"
+  },
+  {
+    "symbol": "CEPB",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CEPB"
+  },
+  {
+    "symbol": "RPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/RPL"
+  },
+  {
+    "symbol": "CSIL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CSIL"
+  },
+  {
+    "symbol": "TRSM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TRSM"
+  },
+  {
+    "symbol": "MUGHAL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MUGHAL"
+  },
+  {
+    "symbol": "ITTEFAQ",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ITTEFAQ"
+  },
+  {
+    "symbol": "STCL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/STCL"
+  },
+  {
+    "symbol": "OBOY",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/OBOY"
+  },
+  {
+    "symbol": "JSCLPSA",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/JSCLPSA"
+  },
+  {
+    "symbol": "SMLNC",
+    "name": "SMLNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SMLNC"
+  },
+  {
+    "symbol": "ICIBL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ICIBL"
+  },
+  {
+    "symbol": "ASCNC",
+    "name": "ASCNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ASCNC"
+  },
+  {
+    "symbol": "KOHE",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/KOHE"
+  },
+  {
+    "symbol": "AHL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AHL"
+  },
+  {
+    "symbol": "POL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/POL"
+  },
+  {
+    "symbol": "ALIFE",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ALIFE"
+  },
+  {
+    "symbol": "AMTEXNC",
+    "name": "AMTEXNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AMTEXNC"
+  },
+  {
+    "symbol": "HTL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HTL"
+  },
+  {
+    "symbol": "HMB",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HMB"
+  },
+  {
+    "symbol": "SBL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SBL"
+  },
+  {
+    "symbol": "HALEON",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HALEON"
+  },
+  {
+    "symbol": "LPGL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/LPGL"
+  },
+  {
+    "symbol": "SMCPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SMCPL"
+  },
+  {
+    "symbol": "RICL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/RICL"
+  },
+  {
+    "symbol": "INIL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/INIL"
+  },
+  {
+    "symbol": "UNIC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/UNIC"
+  },
+  {
+    "symbol": "AGPXD",
+    "name": "AGPXD",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AGPXD"
+  },
+  {
+    "symbol": "GRR",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GRR"
+  },
+  {
+    "symbol": "DWSMNC",
+    "name": "DWSMNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DWSMNC"
+  },
+  {
+    "symbol": "ISL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ISL"
+  },
+  {
+    "symbol": "CWSMNC",
+    "name": "CWSMNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CWSMNC"
+  },
+  {
+    "symbol": "HGFA",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HGFA"
+  },
+  {
+    "symbol": "APL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/APL"
+  },
+  {
+    "symbol": "PASLNC",
+    "name": "PASLNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PASLNC"
+  },
+  {
+    "symbol": "JGICL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/JGICL"
+  },
+  {
+    "symbol": "SSOM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SSOM"
+  },
+  {
+    "symbol": "PILNC",
+    "name": "PILNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PILNC"
+  },
+  {
+    "symbol": "DHPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DHPL"
+  },
+  {
+    "symbol": "JSCL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/JSCL"
+  },
+  {
+    "symbol": "PICT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PICT"
+  },
+  {
+    "symbol": "DSIL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DSIL"
+  },
+  {
+    "symbol": "CHBL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CHBL"
+  },
+  {
+    "symbol": "TOWL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TOWL"
+  },
+  {
+    "symbol": "SEL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SEL"
+  },
+  {
+    "symbol": "IBLHL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/IBLHL"
+  },
+  {
+    "symbol": "FPJM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FPJM"
+  },
+  {
+    "symbol": "AKDSL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AKDSL"
+  },
+  {
+    "symbol": "ORM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ORM"
+  },
+  {
+    "symbol": "FECM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FECM"
+  },
+  {
+    "symbol": "FECTC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FECTC"
+  },
+  {
+    "symbol": "BIFO",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BIFO"
+  },
+  {
+    "symbol": "HIRATNC",
+    "name": "HIRATNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HIRATNC"
+  },
+  {
+    "symbol": "SRVI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SRVI"
+  },
+  {
+    "symbol": "CLOVXB",
+    "name": "CLOVXB",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CLOVXB"
+  },
+  {
+    "symbol": "MERIT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MERIT"
+  },
+  {
+    "symbol": "UBDL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/UBDL"
+  },
+  {
+    "symbol": "ACIETF",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ACIETF"
+  },
+  {
+    "symbol": "BCL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BCL"
+  },
+  {
+    "symbol": "HINOON",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HINOON"
+  },
+  {
+    "symbol": "CRTM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CRTM"
+  },
+  {
+    "symbol": "THALL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/THALL"
+  },
+  {
+    "symbol": "SINDM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SINDM"
+  },
+  {
+    "symbol": "CTM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CTM"
+  },
+  {
+    "symbol": "BAPLNC",
+    "name": "BAPLNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BAPLNC"
+  },
+  {
+    "symbol": "TPLT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TPLT"
+  },
+  {
+    "symbol": "WAFI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/WAFI"
+  },
+  {
+    "symbol": "DFSM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DFSM"
+  },
+  {
+    "symbol": "SHNI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SHNI"
+  },
+  {
+    "symbol": "IGIHL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/IGIHL"
+  },
+  {
+    "symbol": "SGF",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SGF"
+  },
+  {
+    "symbol": "FEROZ",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FEROZ"
+  },
+  {
+    "symbol": "BERG",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BERG"
+  },
+  {
+    "symbol": "ARUJNC",
+    "name": "ARUJNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ARUJNC"
+  },
+  {
+    "symbol": "TSPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TSPL"
+  },
+  {
+    "symbol": "AGSML",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AGSML"
+  },
+  {
+    "symbol": "SIBL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SIBL"
+  },
+  {
+    "symbol": "MIRKS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MIRKS"
+  },
+  {
+    "symbol": "STYLERS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/STYLERS"
+  },
+  {
+    "symbol": "MWMP",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MWMP"
+  },
+  {
+    "symbol": "FRCL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FRCL"
+  },
+  {
+    "symbol": "CLCPS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CLCPS"
+  },
+  {
+    "symbol": "PMPK",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PMPK"
+  },
+  {
+    "symbol": "MFFL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MFFL"
+  },
+  {
+    "symbol": "IMS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/IMS"
+  },
+  {
+    "symbol": "BILFNC",
+    "name": "BILFNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BILFNC"
+  },
+  {
+    "symbol": "CYAN",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CYAN"
+  },
+  {
+    "symbol": "AGIC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AGIC"
+  },
+  {
+    "symbol": "JSGBETF",
+    "name": "ETF Stats",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/JSGBETF"
+  },
+  {
+    "symbol": "AGTL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AGTL"
+  },
+  {
+    "symbol": "HIFA",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HIFA"
+  },
+  {
+    "symbol": "EMCO",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/EMCO"
+  },
+  {
+    "symbol": "AGIL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AGIL"
+  },
+  {
+    "symbol": "ABL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ABL"
+  },
+  {
+    "symbol": "NATF",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NATF"
+  },
+  {
+    "symbol": "CLVL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CLVL"
+  },
+  {
+    "symbol": "ICL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ICL"
+  },
+  {
+    "symbol": "BFMOD",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BFMOD"
+  },
+  {
+    "symbol": "DNCC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DNCC"
+  },
+  {
+    "symbol": "LSEVL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/LSEVL"
+  },
+  {
+    "symbol": "PNSC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PNSC"
+  },
+  {
+    "symbol": "HABSM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HABSM"
+  },
+  {
+    "symbol": "POWERPS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/POWERPS"
+  },
+  {
+    "symbol": "SITC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SITC"
+  },
+  {
+    "symbol": "KOIL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/KOIL"
+  },
+  {
+    "symbol": "DBCINC",
+    "name": "DBCINC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DBCINC"
+  },
+  {
+    "symbol": "UDLI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/UDLI"
+  },
+  {
+    "symbol": "PAKOXY",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PAKOXY"
+  },
+  {
+    "symbol": "SHFA",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SHFA"
+  },
+  {
+    "symbol": "JSML",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/JSML"
+  },
+  {
+    "symbol": "DYNO",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DYNO"
+  },
+  {
+    "symbol": "GFIL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GFIL"
+  },
+  {
+    "symbol": "PTL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PTL"
+  },
+  {
+    "symbol": "PKGI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PKGI"
+  },
+  {
+    "symbol": "COLG",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/COLG"
+  },
+  {
+    "symbol": "PKGS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PKGS"
+  },
+  {
+    "symbol": "NEXT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NEXT"
+  },
+  {
+    "symbol": "SKRSNC",
+    "name": "SKRSNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SKRSNC"
+  },
+  {
+    "symbol": "ADMM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ADMM"
+  },
+  {
+    "symbol": "FDPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FDPL"
+  },
+  {
+    "symbol": "UCAPM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/UCAPM"
+  },
+  {
+    "symbol": "TSMF",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TSMF"
+  },
+  {
+    "symbol": "CJPLNC",
+    "name": "CJPLNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CJPLNC"
+  },
+  {
+    "symbol": "IDYM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/IDYM"
+  },
+  {
+    "symbol": "CENI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CENI"
+  },
+  {
+    "symbol": "ALAC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ALAC"
+  },
+  {
+    "symbol": "DEL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DEL"
+  },
+  {
+    "symbol": "GRYL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GRYL"
+  },
+  {
+    "symbol": "REDCO",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/REDCO"
+  },
+  {
+    "symbol": "ADAMS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ADAMS"
+  },
+  {
+    "symbol": "MACTER",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MACTER"
+  },
+  {
+    "symbol": "ATBA",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ATBA"
+  },
+  {
+    "symbol": "LSEFSL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/LSEFSL"
+  },
+  {
+    "symbol": "ESBL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ESBL"
+  },
+  {
+    "symbol": "SARC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SARC"
+  },
+  {
+    "symbol": "PINL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PINL"
+  },
+  {
+    "symbol": "HWQSNC",
+    "name": "HWQSNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HWQSNC"
+  },
+  {
+    "symbol": "SAIF",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SAIF"
+  },
+  {
+    "symbol": "MACFL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MACFL"
+  },
+  {
+    "symbol": "TSBL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TSBL"
+  },
+  {
+    "symbol": "FHAM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FHAM"
+  },
+  {
+    "symbol": "TPLRF1",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TPLRF1"
+  },
+  {
+    "symbol": "SCBPLXD",
+    "name": "SCBPLXD",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SCBPLXD"
+  },
+  {
+    "symbol": "CHAS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CHAS"
+  },
+  {
+    "symbol": "ECOP",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ECOP"
+  },
+  {
+    "symbol": "FML",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FML"
+  },
+  {
+    "symbol": "DWAENC",
+    "name": "DWAENC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DWAENC"
+  },
+  {
+    "symbol": "EFUL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/EFUL"
+  },
+  {
+    "symbol": "ICCI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ICCI"
+  },
+  {
+    "symbol": "HAEL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HAEL"
+  },
+  {
+    "symbol": "IDRT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/IDRT"
+  },
+  {
+    "symbol": "RUBYNC",
+    "name": "RUBYNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/RUBYNC"
+  },
+  {
+    "symbol": "GEMBLUEX",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GEMBLUEX"
+  },
+  {
+    "symbol": "ABOT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ABOT"
+  },
+  {
+    "symbol": "DADX",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DADX"
+  },
+  {
+    "symbol": "BWCL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BWCL"
+  },
+  {
+    "symbol": "BWHL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BWHL"
+  },
+  {
+    "symbol": "KOHTM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/KOHTM"
+  },
+  {
+    "symbol": "PAKD",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PAKD"
+  },
+  {
+    "symbol": "LCI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/LCI"
+  },
+  {
+    "symbol": "KTML",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/KTML"
+  },
+  {
+    "symbol": "HINO",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HINO"
+  },
+  {
+    "symbol": "KOHP",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/KOHP"
+  },
+  {
+    "symbol": "IGIL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/IGIL"
+  },
+  {
+    "symbol": "LSECL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/LSECL"
+  },
+  {
+    "symbol": "PCAL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PCAL"
+  },
+  {
+    "symbol": "TPLI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TPLI"
+  },
+  {
+    "symbol": "JVDC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/JVDC"
+  },
+  {
+    "symbol": "INKL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/INKL"
+  },
+  {
+    "symbol": "ATLH",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ATLH"
+  },
+  {
+    "symbol": "SANSM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SANSM"
+  },
+  {
+    "symbol": "RUPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/RUPL"
+  },
+  {
+    "symbol": "MFL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MFL"
+  },
+  {
+    "symbol": "MUREB",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MUREB"
+  },
+  {
+    "symbol": "NBPGETF",
+    "name": "ETF Stats",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NBPGETF"
+  },
+  {
+    "symbol": "LEUL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/LEUL"
+  },
+  {
+    "symbol": "LIVEN",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/LIVEN"
+  },
+  {
+    "symbol": "SEPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SEPL"
+  },
+  {
+    "symbol": "EXIDE",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/EXIDE"
+  },
+  {
+    "symbol": "GSPMNC",
+    "name": "GSPMNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GSPMNC"
+  },
+  {
+    "symbol": "INDU",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/INDU"
+  },
+  {
+    "symbol": "BNWM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BNWM"
+  },
+  {
+    "symbol": "JDMT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/JDMT"
+  },
+  {
+    "symbol": "UBLPETF",
+    "name": "ETF Stats",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/UBLPETF"
+  },
+  {
+    "symbol": "MSOT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MSOT"
+  },
+  {
+    "symbol": "786",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/786"
+  },
+  {
+    "symbol": "TATM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TATM"
+  },
+  {
+    "symbol": "SHDT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SHDT"
+  },
+  {
+    "symbol": "SUTM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SUTM"
+  },
+  {
+    "symbol": "FTMM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FTMM"
+  },
+  {
+    "symbol": "DLL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DLL"
+  },
+  {
+    "symbol": "FEM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FEM"
+  },
+  {
+    "symbol": "MRNS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MRNS"
+  },
+  {
+    "symbol": "MCBIM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MCBIM"
+  },
+  {
+    "symbol": "ASTM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ASTM"
+  },
+  {
+    "symbol": "FPRM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FPRM"
+  },
+  {
+    "symbol": "UVIC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/UVIC"
+  },
+  {
+    "symbol": "UDPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/UDPL"
+  },
+  {
+    "symbol": "KHTC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/KHTC"
+  },
+  {
+    "symbol": "ARPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ARPL"
+  },
+  {
+    "symbol": "PAKT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PAKT"
+  },
+  {
+    "symbol": "SLYTNC",
+    "name": "SLYTNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SLYTNC"
+  },
+  {
+    "symbol": "FFLM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FFLM"
+  },
+  {
+    "symbol": "DWTMNC",
+    "name": "DWTMNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DWTMNC"
+  },
+  {
+    "symbol": "OLPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/OLPL"
+  },
+  {
+    "symbol": "NICL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NICL"
+  },
+  {
+    "symbol": "IML",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/IML"
+  },
+  {
+    "symbol": "PGLC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PGLC"
+  },
+  {
+    "symbol": "GEMBCEM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GEMBCEM"
+  },
+  {
+    "symbol": "DAAG",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DAAG"
+  },
+  {
+    "symbol": "BOKXD",
+    "name": "BOKXD",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BOKXD"
+  },
+  {
+    "symbol": "ZIL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ZIL"
+  },
+  {
+    "symbol": "JSIL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/JSIL"
+  },
+  {
+    "symbol": "OLPM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/OLPM"
+  },
+  {
+    "symbol": "GATI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GATI"
+  },
+  {
+    "symbol": "SERT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SERT"
+  },
+  {
+    "symbol": "IDSM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/IDSM"
+  },
+  {
+    "symbol": "PPP",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PPP"
+  },
+  {
+    "symbol": "CPPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CPPL"
+  },
+  {
+    "symbol": "SSMLNC",
+    "name": "SSMLNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SSMLNC"
+  },
+  {
+    "symbol": "SNAI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SNAI"
+  },
+  {
+    "symbol": "ATILXD",
+    "name": "ATILXD",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ATILXD"
+  },
+  {
+    "symbol": "AATM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AATM"
+  },
+  {
+    "symbol": "SGPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SGPL"
+  },
+  {
+    "symbol": "BRRG",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BRRG"
+  },
+  {
+    "symbol": "GADT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GADT"
+  },
+  {
+    "symbol": "GVGL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GVGL"
+  },
+  {
+    "symbol": "HBLTETF",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HBLTETF"
+  },
+  {
+    "symbol": "SIEM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SIEM"
+  },
+  {
+    "symbol": "KPUS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/KPUS"
+  },
+  {
+    "symbol": "SPLNC",
+    "name": "SPLNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SPLNC"
+  },
+  {
+    "symbol": "EPCLPS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/EPCLPS"
+  },
+  {
+    "symbol": "POML",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/POML"
+  },
+  {
+    "symbol": "NONS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NONS"
+  },
+  {
+    "symbol": "AMBL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AMBL"
+  },
+  {
+    "symbol": "OTSU",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/OTSU"
+  },
+  {
+    "symbol": "GLPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GLPL"
+  },
+  {
+    "symbol": "NCMLNC",
+    "name": "NCMLNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NCMLNC"
+  },
+  {
+    "symbol": "ARCTM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ARCTM"
+  },
+  {
+    "symbol": "PKGP",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PKGP"
+  },
+  {
+    "symbol": "TSML",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TSML"
+  },
+  {
+    "symbol": "ELCM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ELCM"
+  },
+  {
+    "symbol": "JATM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/JATM"
+  },
+  {
+    "symbol": "NITGETF",
+    "name": "ETF Stats",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NITGETF"
+  },
+  {
+    "symbol": "HRPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HRPL"
+  },
+  {
+    "symbol": "EFUG",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/EFUG"
+  },
+  {
+    "symbol": "MSCL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MSCL"
+  },
+  {
+    "symbol": "BATA",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BATA"
+  },
+  {
+    "symbol": "FCELNC",
+    "name": "FCELNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FCELNC"
+  },
+  {
+    "symbol": "MQTM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MQTM"
+  },
+  {
+    "symbol": "GUSMNC",
+    "name": "GUSMNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GUSMNC"
+  },
+  {
+    "symbol": "FTSM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FTSM"
+  },
+  {
+    "symbol": "ZAHID",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ZAHID"
+  },
+  {
+    "symbol": "JLICLXD",
+    "name": "JLICLXD",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/JLICLXD"
+  },
+  {
+    "symbol": "ANTM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ANTM"
+  },
+  {
+    "symbol": "WAHN",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/WAHN"
+  },
+  {
+    "symbol": "GEMPAPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GEMPAPL"
+  },
+  {
+    "symbol": "MEHT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/MEHT"
+  },
+  {
+    "symbol": "ALNRS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ALNRS"
+  },
+  {
+    "symbol": "DIIL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DIIL"
+  },
+  {
+    "symbol": "IBFL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/IBFL"
+  },
+  {
+    "symbol": "JDWS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/JDWS"
+  },
+  {
+    "symbol": "NESTLE",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NESTLE"
+  },
+  {
+    "symbol": "ISIL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ISIL"
+  },
+  {
+    "symbol": "TRIPF",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TRIPF"
+  },
+  {
+    "symbol": "UPFL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/UPFL"
+  },
+  {
+    "symbol": "CCM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/CCM"
+  },
+  {
+    "symbol": "AABS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AABS"
+  },
+  {
+    "symbol": "RMPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/RMPL"
+  },
+  {
+    "symbol": "PPVCNC",
+    "name": "PPVCNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PPVCNC"
+  },
+  {
+    "symbol": "SAPT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SAPT"
+  },
+  {
+    "symbol": "SHJS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SHJS"
+  },
+  {
+    "symbol": "ELSM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ELSM"
+  },
+  {
+    "symbol": "PASMNC",
+    "name": "PASMNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PASMNC"
+  },
+  {
+    "symbol": "KSTMNC",
+    "name": "KSTMNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/KSTMNC"
+  },
+  {
+    "symbol": "STJT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/STJT"
+  },
+  {
+    "symbol": "PSYL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PSYL"
+  },
+  {
+    "symbol": "FASM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FASM"
+  },
+  {
+    "symbol": "STL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/STL"
+  },
+  {
+    "symbol": "BPL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BPL"
+  },
+  {
+    "symbol": "SHEZ",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SHEZ"
+  },
+  {
+    "symbol": "PMRS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PMRS"
+  },
+  {
+    "symbol": "HUSI",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HUSI"
+  },
+  {
+    "symbol": "HPLXD",
+    "name": "HPLXD",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HPLXD"
+  },
+  {
+    "symbol": "PIM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PIM"
+  },
+  {
+    "symbol": "JUBSNC",
+    "name": "JUBSNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/JUBSNC"
+  },
+  {
+    "symbol": "JSGCL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/JSGCL"
+  },
+  {
+    "symbol": "QUETNC",
+    "name": "QUETNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/QUETNC"
+  },
+  {
+    "symbol": "KML",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/KML"
+  },
+  {
+    "symbol": "FZCM",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FZCM"
+  },
+  {
+    "symbol": "KHYT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/KHYT"
+  },
+  {
+    "symbol": "BUXL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BUXL"
+  },
+  {
+    "symbol": "BELANC",
+    "name": "BELANC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BELANC"
+  },
+  {
+    "symbol": "SCL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/SCL"
+  },
+  {
+    "symbol": "PSEL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PSEL"
+  },
+  {
+    "symbol": "AKDHL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/AKDHL"
+  },
+  {
+    "symbol": "RCML",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/RCML"
+  },
+  {
+    "symbol": "TPLL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TPLL"
+  },
+  {
+    "symbol": "BTL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/BTL"
+  },
+  {
+    "symbol": "DINT",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/DINT"
+  },
+  {
+    "symbol": "ASLPS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ASLPS"
+  },
+  {
+    "symbol": "ASIC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/ASIC"
+  },
+  {
+    "symbol": "HAFL",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/HAFL"
+  },
+  {
+    "symbol": "NAGC",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/NAGC"
+  },
+  {
+    "symbol": "TCORPCPS",
+    "name": "No record found",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/TCORPCPS"
+  },
+  {
+    "symbol": "PECONC",
+    "name": "PECONC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/PECONC"
+  },
+  {
+    "symbol": "FILNC",
+    "name": "FILNC",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/FILNC"
+  },
+  {
+    "symbol": "GEMSPNLXB",
+    "name": "GEMSPNLXB",
+    "sector": "Unknown",
+    "url": "https://dps.psx.com.pk/company/GEMSPNLXB"
+  }
+]

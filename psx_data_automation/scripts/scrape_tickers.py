@@ -19,12 +19,17 @@ Usage:
 import csv
 import logging
 import os
+import time
+import random
 from datetime import datetime
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import requests
+import re
 
 # Use absolute imports instead of relative
-from psx_data_automation.config import METADATA_DIR, PSX_BASE_URL, PSX_DATA_PORTAL_URL
-from psx_data_automation.scripts.utils import fetch_url, parse_html, ensure_directory_exists, format_ticker_symbol
+from psx_data_automation.config import METADATA_DIR, PSX_BASE_URL, PSX_DATA_PORTAL_URL, COMPANY_URL_TEMPLATE
+from psx_data_automation.scripts.utils import parse_html, ensure_directory_exists, format_ticker_symbol
 
 # Set up logging
 logger = logging.getLogger("psx_pipeline.tickers")
@@ -36,23 +41,201 @@ CHANGES_LOG = METADATA_DIR / "ticker_changes.log"
 # URL for Market Watch on PSX Data Portal
 MARKET_WATCH_URL = f"{PSX_DATA_PORTAL_URL}/market-watch"
 
+# Maximum number of concurrent requests for company details
+MAX_CONCURRENT_REQUESTS = 10
 
-def fetch_tickers_from_psx():
+
+def fetch_url(url, headers=None, max_retries=3, retry_delay=1.0):
     """
-    Scrape the PSX Data Portal website to get the current list of tickers from Market Watch.
+    Fetch the HTML content from a given URL with retry logic and headers.
+    
+    Args:
+        url (str): The URL to fetch
+        headers (dict): Optional headers to send with the request
+        max_retries (int): Maximum number of retries
+        retry_delay (float): Delay between retries in seconds
     
     Returns:
-        list: List of ticker dictionaries with symbol, name, and sector
+        str: HTML content of the page
+    
+    Raises:
+        Exception: If the URL couldn't be fetched after max retries
+    """
+    if headers is None:
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Referer': PSX_DATA_PORTAL_URL,
+        }
+    
+    for attempt in range(max_retries):
+        try:
+            response = requests.get(url, headers=headers, timeout=30)
+            response.raise_for_status()  # Raise an exception for 4xx/5xx status codes
+            return response.text
+        except Exception as e:
+            if attempt < max_retries - 1:
+                # Wait with exponential backoff before retrying
+                wait_time = retry_delay * (2 ** attempt) * random.uniform(0.8, 1.2)
+                logger.warning(f"Error fetching {url}: {str(e)}. Retrying in {wait_time:.2f} seconds...")
+                time.sleep(wait_time)
+            else:
+                # Last attempt failed
+                raise Exception(f"Failed to fetch {url} after {max_retries} attempts: {str(e)}")
+
+
+def fetch_company_details(symbol, url=None):
+    """
+    Fetch detailed information about a company from its individual page.
+    
+    Args:
+        symbol (str): The ticker symbol of the company
+        url (str): The URL of the company's individual page
+    
+    Returns:
+        dict: Company details including name, sector, and URL
+    """
+    details = {
+        'symbol': symbol,
+        'name': symbol,  # Default to symbol
+        'sector': "Unknown",  # Default sector
+        'url': url if url else f"{COMPANY_URL_TEMPLATE}{symbol}"
+    }
+    
+    try:
+        company_url = details['url']
+        logger.debug(f"Fetching company details for {symbol} from {company_url}")
+        
+        # Add randomized headers to avoid detection patterns
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Referer': f"{PSX_DATA_PORTAL_URL}/market-watch",
+            'Connection': 'keep-alive',
+            'Cache-Control': 'max-age=0',
+        }
+        
+        html_content = fetch_url(company_url, headers=headers)
+        soup = parse_html(html_content)
+        
+        # First try to extract from the company profile section
+        # In dps.psx.com.pk/company/SYMBOL format, company name and sector are in specific places
+        
+        # For company name - usually in the header near the symbol
+        company_name_elem = soup.select_one('h1, h2, h3, .company-name')
+        if company_name_elem:
+            company_name = company_name_elem.text.strip()
+            if company_name and company_name != symbol:
+                details['name'] = company_name
+        
+        # Try to find sector in a specific element or associated with "REFINERY" or similar text
+        sector_elem = soup.select_one('.sector, .industry, .category')
+        if not sector_elem:
+            # In the DPS portal, sector is often displayed prominently near the company name
+            for elem in soup.select('strong, b, h4, h5, .badge, .sector-badge'):
+                if elem.text and len(elem.text.strip()) < 50:  # Reasonable length for a sector
+                    text = elem.text.strip().upper()
+                    # Common sectors in PSX
+                    sectors = ['REFINERY', 'CEMENT', 'COMMERCIAL BANKS', 'FERTILIZER', 
+                              'OIL & GAS', 'POWER', 'TEXTILE', 'PHARMACEUTICALS']
+                    if any(sector in text for sector in sectors):
+                        details['sector'] = elem.text.strip()
+                        break
+        else:
+            details['sector'] = sector_elem.text.strip()
+        
+        # If we still don't have a company name, look for it in the page title
+        if details['name'] == symbol:
+            title_elem = soup.select_one('title')
+            if title_elem and title_elem.text:
+                title = title_elem.text.strip()
+                # Extract company name from title (often in format "Company Name - PSX")
+                if ' - ' in title:
+                    company_name = title.split(' - ')[0].strip()
+                    if company_name and company_name != symbol:
+                        details['name'] = company_name
+        
+        # Extract from the business description if available
+        business_desc = soup.select_one('.business-description, #company-profile')
+        if business_desc:
+            # If we have a business description, try to extract sector from first paragraph
+            paragraphs = business_desc.select('p')
+            if paragraphs:
+                first_para = paragraphs[0].text.lower()
+                sector_keywords = {
+                    'bank': 'Commercial Banks',
+                    'cement': 'Cement',
+                    'oil': 'Oil & Gas',
+                    'gas': 'Oil & Gas Marketing Companies',
+                    'pharma': 'Pharmaceuticals',
+                    'fertilizer': 'Fertilizer',
+                    'textile': 'Textile',
+                    'power': 'Power Generation & Distribution',
+                    'refinery': 'Refinery',
+                    'insurance': 'Insurance',
+                    'investment': 'Investment',
+                    'automobile': 'Automobile',
+                    'chemical': 'Chemical',
+                    'technology': 'Technology & Communication',
+                    'food': 'Food & Personal Care Products'
+                }
+                
+                for keyword, sector_name in sector_keywords.items():
+                    if keyword in first_para:
+                        details['sector'] = sector_name
+                        break
+            
+            # If still no name, try to extract it from the business description
+            if details['name'] == symbol:
+                match = re.search(r'([A-Za-z\s]+)\s+(?:was|is|has been)\s+incorporated', business_desc.text)
+                if match:
+                    company_name = match.group(1).strip()
+                    if company_name and len(company_name) > 3:  # Avoid too short matches
+                        details['name'] = company_name
+        
+        logger.debug(f"Fetched details for {symbol}: {details['name']} - {details['sector']}")
+    
+    except Exception as e:
+        logger.warning(f"Failed to fetch company details for {symbol}: {str(e)}")
+    
+    return details
+
+
+def fetch_tickers_from_psx(fetch_details=True):
+    """
+    Scrape the PSX Data Portal website to get the current list of tickers from Market Watch.
+    Then fetch detailed information for each ticker from individual company pages.
+    
+    Args:
+        fetch_details (bool): Whether to fetch detailed company information
+    
+    Returns:
+        list: List of ticker dictionaries with symbol, name, sector and URL
     """
     logger.info("Fetching current ticker list from PSX Data Portal")
     
     tickers = []
+    ticker_data = []  # Store symbol and URL pairs
     
     try:
         # Try to fetch from the Market Watch section of PSX Data Portal
         try:
             logger.info(f"Trying to fetch tickers from {MARKET_WATCH_URL}")
-            html_content = fetch_url(MARKET_WATCH_URL)
+            
+            # Add headers to avoid being blocked
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.5',
+                'Referer': PSX_BASE_URL,
+                'Connection': 'keep-alive',
+                'Upgrade-Insecure-Requests': '1',
+                'Cache-Control': 'max-age=0',
+            }
+            
+            html_content = fetch_url(MARKET_WATCH_URL, headers=headers)
             soup = parse_html(html_content)
             
             # Look for the market watch table
@@ -96,23 +279,82 @@ def fetch_tickers_from_psx():
                         # Get symbol, which is always needed
                         if 'symbol' in header_mapping:
                             symbol_col = header_mapping['symbol']
-                            symbol = format_ticker_symbol(columns[symbol_col].text)
+                            symbol_cell = columns[symbol_col]
                         else:
                             # If we can't determine which column has the symbol, use the first column
-                            symbol = format_ticker_symbol(columns[0].text)
+                            symbol_cell = columns[0]
                         
-                        # Initialize ticker with symbol and default values
-                        ticker = {
-                            'symbol': symbol,
-                            'name': symbol,  # Use symbol as name if name is not available
-                            'sector': "Unknown"
-                        }
+                        # Extract symbol text
+                        symbol = format_ticker_symbol(symbol_cell.text)
                         
-                        # Add to tickers list if it's a valid symbol (not empty or "Select...")
+                        # Extract URL if there's a link
+                        ticker_url = ""
+                        symbol_link = symbol_cell.select_one('a')
+                        if symbol_link and 'href' in symbol_link.attrs:
+                            href = symbol_link['href']
+                            # Make sure we have a full URL
+                            if href.startswith('/'):
+                                ticker_url = f"{PSX_BASE_URL}{href}"
+                            elif href.startswith('http'):
+                                ticker_url = href
+                            else:
+                                ticker_url = f"{PSX_BASE_URL}/{href}"
+                        
+                        # Add to ticker data list if it's a valid symbol (not empty or "Select...")
                         if symbol and len(symbol) > 1 and 'SELECT' not in symbol.upper():
-                            tickers.append(ticker)
+                            ticker_data.append({
+                                'symbol': symbol,
+                                'url': ticker_url
+                            })
                 
-                logger.info(f"Successfully fetched {len(tickers)} tickers from PSX Market Watch")
+                logger.info(f"Successfully fetched {len(ticker_data)} ticker symbols from PSX Market Watch")
+                
+                # If we have ticker data and want detailed information
+                if ticker_data and fetch_details:
+                    logger.info(f"Fetching detailed company information for {len(ticker_data)} tickers...")
+                    
+                    # Use a thread pool to fetch company details concurrently
+                    with ThreadPoolExecutor(max_workers=MAX_CONCURRENT_REQUESTS) as executor:
+                        # Submit tasks with both symbol and URL
+                        future_to_ticker = {executor.submit(fetch_company_details, data['symbol'], data['url']): data for data in ticker_data}
+                        
+                        # Process results as they complete
+                        completed = 0
+                        for future in as_completed(future_to_ticker):
+                            ticker_data_item = future_to_ticker[future]
+                            symbol = ticker_data_item['symbol']
+                            url = ticker_data_item['url']
+                            
+                            try:
+                                ticker_details = future.result()
+                                tickers.append(ticker_details)
+                                
+                                # Log progress
+                                completed += 1
+                                if completed % 50 == 0 or completed == len(ticker_data):
+                                    logger.info(f"Fetched details for {completed}/{len(ticker_data)} companies")
+                                
+                            except Exception as e:
+                                logger.warning(f"Error processing {symbol}: {str(e)}")
+                                # Add with default values if there's an error
+                                tickers.append({
+                                    'symbol': symbol,
+                                    'name': symbol,
+                                    'sector': "Unknown",
+                                    'url': url
+                                })
+                            
+                            # Add a randomized delay to avoid server detection patterns
+                            time.sleep(random.uniform(0.2, 0.8))
+                else:
+                    # If we don't want details or have no ticker data, create basic ticker entries
+                    for data in ticker_data:
+                        tickers.append({
+                            'symbol': data['symbol'],
+                            'name': data['symbol'],
+                            'sector': "Unknown",
+                            'url': data['url']
+                        })
                 
                 # If we successfully got tickers, return them
                 if tickers:
@@ -122,6 +364,26 @@ def fetch_tickers_from_psx():
                 
         except Exception as e:
             logger.warning(f"Failed to fetch tickers from PSX Market Watch: {str(e)}")
+            
+            # Wait a bit and retry with different headers
+            time.sleep(random.uniform(2, 5))
+            try:
+                logger.info("Retrying with different request parameters...")
+                headers = {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                    'Accept-Language': 'en-GB,en;q=0.9',
+                    'DNT': '1',
+                    'Connection': 'keep-alive',
+                    'Upgrade-Insecure-Requests': '1',
+                }
+                html_content = fetch_url(MARKET_WATCH_URL, headers=headers)
+                # Continue processing with the retry content
+                # (Processing code would be repeated here)
+            except Exception as retry_error:
+                logger.warning(f"Retry also failed: {str(retry_error)}")
+        
+        # If we're here, we need to try alternative sources
         
         # Try from the main PSX website as fallback
         logger.info("Trying to fetch tickers from PSX corporate website...")
@@ -166,30 +428,30 @@ def fetch_tickers_from_psx():
         # This would be removed in production after fixing the scraping
         logger.warning("Using mock data for testing purposes")
         mock_tickers = [
-            {'symbol': 'HBL', 'name': 'Habib Bank Limited', 'sector': 'Commercial Banks'},
-            {'symbol': 'ENGRO', 'name': 'Engro Corporation Limited', 'sector': 'Fertilizer'},
-            {'symbol': 'PSO', 'name': 'Pakistan State Oil Company Limited', 'sector': 'Oil & Gas Marketing Companies'},
-            {'symbol': 'LUCK', 'name': 'Lucky Cement Limited', 'sector': 'Cement'},
-            {'symbol': 'OGDC', 'name': 'Oil & Gas Development Company Limited', 'sector': 'Oil & Gas Exploration Companies'},
-            {'symbol': 'PPL', 'name': 'Pakistan Petroleum Limited', 'sector': 'Oil & Gas Exploration Companies'},
-            {'symbol': 'UBL', 'name': 'United Bank Limited', 'sector': 'Commercial Banks'},
-            {'symbol': 'MCB', 'name': 'MCB Bank Limited', 'sector': 'Commercial Banks'},
-            {'symbol': 'FFC', 'name': 'Fauji Fertilizer Company Limited', 'sector': 'Fertilizer'},
-            {'symbol': 'EFERT', 'name': 'Engro Fertilizers Limited', 'sector': 'Fertilizer'},
+            {'symbol': 'HBL', 'name': 'Habib Bank Limited', 'sector': 'Commercial Banks', 'url': f"{COMPANY_URL_TEMPLATE}HBL"},
+            {'symbol': 'ENGRO', 'name': 'Engro Corporation Limited', 'sector': 'Fertilizer', 'url': f"{COMPANY_URL_TEMPLATE}ENGRO"},
+            {'symbol': 'PSO', 'name': 'Pakistan State Oil Company Limited', 'sector': 'Oil & Gas Marketing Companies', 'url': f"{COMPANY_URL_TEMPLATE}PSO"},
+            {'symbol': 'LUCK', 'name': 'Lucky Cement Limited', 'sector': 'Cement', 'url': f"{COMPANY_URL_TEMPLATE}LUCK"},
+            {'symbol': 'OGDC', 'name': 'Oil & Gas Development Company Limited', 'sector': 'Oil & Gas Exploration Companies', 'url': f"{COMPANY_URL_TEMPLATE}OGDC"},
+            {'symbol': 'PPL', 'name': 'Pakistan Petroleum Limited', 'sector': 'Oil & Gas Exploration Companies', 'url': f"{COMPANY_URL_TEMPLATE}PPL"},
+            {'symbol': 'UBL', 'name': 'United Bank Limited', 'sector': 'Commercial Banks', 'url': f"{COMPANY_URL_TEMPLATE}UBL"},
+            {'symbol': 'MCB', 'name': 'MCB Bank Limited', 'sector': 'Commercial Banks', 'url': f"{COMPANY_URL_TEMPLATE}MCB"},
+            {'symbol': 'FFC', 'name': 'Fauji Fertilizer Company Limited', 'sector': 'Fertilizer', 'url': f"{COMPANY_URL_TEMPLATE}FFC"},
+            {'symbol': 'EFERT', 'name': 'Engro Fertilizers Limited', 'sector': 'Fertilizer', 'url': f"{COMPANY_URL_TEMPLATE}EFERT"},
             # Adding a new ticker for testing changes
-            {'symbol': 'BAHL', 'name': 'Bank Al Habib Limited', 'sector': 'Commercial Banks'},
-            {'symbol': 'MEBL', 'name': 'Meezan Bank Limited', 'sector': 'Commercial Banks'},
+            {'symbol': 'BAHL', 'name': 'Bank Al Habib Limited', 'sector': 'Commercial Banks', 'url': f"{COMPANY_URL_TEMPLATE}BAHL"},
+            {'symbol': 'MEBL', 'name': 'Meezan Bank Limited', 'sector': 'Commercial Banks', 'url': f"{COMPANY_URL_TEMPLATE}MEBL"},
             # Add some tickers from the image
-            {'symbol': 'CNERGY', 'name': 'Cnergyico PK Limited', 'sector': 'Oil & Gas Marketing Companies'},
-            {'symbol': 'KEL', 'name': 'K-Electric Limited', 'sector': 'Power Generation & Distribution'},
-            {'symbol': 'SSGC', 'name': 'Sui Southern Gas Company Limited', 'sector': 'Oil & Gas Marketing Companies'},
-            {'symbol': 'PIBTL', 'name': 'Pakistan International Bulk Terminal Limited', 'sector': 'Transportation'},
-            {'symbol': 'MLCF', 'name': 'Maple Leaf Cement Factory Limited', 'sector': 'Cement'},
-            {'symbol': 'PAEL', 'name': 'Pak Elektron Limited', 'sector': 'Electrical Goods'},
-            {'symbol': 'FCCL', 'name': 'Fauji Cement Company Limited', 'sector': 'Cement'},
-            {'symbol': 'WTL', 'name': 'WorldCall Telecom Limited', 'sector': 'Technology & Communication'},
-            {'symbol': 'CPHL', 'name': 'CPL Holdings', 'sector': 'Pharmaceuticals'},
-            {'symbol': 'SNGP', 'name': 'Sui Northern Gas Pipelines Limited', 'sector': 'Oil & Gas Marketing Companies'}
+            {'symbol': 'CNERGY', 'name': 'Cnergyico PK Limited', 'sector': 'Refinery', 'url': f"{COMPANY_URL_TEMPLATE}CNERGY"},
+            {'symbol': 'KEL', 'name': 'K-Electric Limited', 'sector': 'Power Generation & Distribution', 'url': f"{COMPANY_URL_TEMPLATE}KEL"},
+            {'symbol': 'SSGC', 'name': 'Sui Southern Gas Company Limited', 'sector': 'Oil & Gas Marketing Companies', 'url': f"{COMPANY_URL_TEMPLATE}SSGC"},
+            {'symbol': 'PIBTL', 'name': 'Pakistan International Bulk Terminal Limited', 'sector': 'Transportation', 'url': f"{COMPANY_URL_TEMPLATE}PIBTL"},
+            {'symbol': 'MLCF', 'name': 'Maple Leaf Cement Factory Limited', 'sector': 'Cement', 'url': f"{COMPANY_URL_TEMPLATE}MLCF"},
+            {'symbol': 'PAEL', 'name': 'Pak Elektron Limited', 'sector': 'Electrical Goods', 'url': f"{COMPANY_URL_TEMPLATE}PAEL"},
+            {'symbol': 'FCCL', 'name': 'Fauji Cement Company Limited', 'sector': 'Cement', 'url': f"{COMPANY_URL_TEMPLATE}FCCL"},
+            {'symbol': 'WTL', 'name': 'WorldCall Telecom Limited', 'sector': 'Technology & Communication', 'url': f"{COMPANY_URL_TEMPLATE}WTL"},
+            {'symbol': 'CPHL', 'name': 'CPL Holdings', 'sector': 'Pharmaceuticals', 'url': f"{COMPANY_URL_TEMPLATE}CPHL"},
+            {'symbol': 'SNGP', 'name': 'Sui Northern Gas Pipelines Limited', 'sector': 'Oil & Gas Marketing Companies', 'url': f"{COMPANY_URL_TEMPLATE}SNGP"}
         ]
         tickers = mock_tickers
         logger.info(f"Created {len(tickers)} mock tickers for testing")
@@ -362,9 +624,12 @@ def identify_changes(current_tickers, previous_tickers):
     return list(added_symbols), list(deleted_symbols), renamed
 
 
-def sync_tickers():
+def sync_tickers(fetch_details=True):
     """
     Main function to synchronize the ticker list with PSX.
+    
+    Args:
+        fetch_details (bool): Whether to fetch detailed company information
     
     Returns:
         bool: True if successful, False otherwise
@@ -372,7 +637,7 @@ def sync_tickers():
     logger.info("Starting ticker synchronization")
     
     # Fetch current tickers from PSX
-    current_tickers = fetch_tickers_from_psx()
+    current_tickers = fetch_tickers_from_psx(fetch_details)
     
     if not current_tickers:
         logger.error("Failed to fetch current tickers. Aborting sync.")

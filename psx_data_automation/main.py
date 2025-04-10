@@ -8,6 +8,7 @@ This script provides a command-line interface to:
 - Sync ticker lists from PSX
 - Download historical OHLC data
 - Update existing data with latest figures
+- Update ticker names and sectors
 - Run the complete pipeline
 """
 
@@ -19,6 +20,7 @@ from datetime import datetime
 # Use absolute imports
 from psx_data_automation.config import __version__, LOG_DIR
 from psx_data_automation.scripts.scrape_tickers import sync_tickers
+from psx_data_automation.scripts.update_ticker_info import main as update_ticker_info
 
 # Set up logging
 log_file = LOG_DIR / f"pipeline_{datetime.now().strftime('%Y-%m-%d')}.log"
@@ -43,6 +45,7 @@ def setup_argparser():
     parser.add_argument('--sync-tickers', action='store_true', help='Sync ticker list from PSX')
     parser.add_argument('--download-historical', action='store_true', help='Download historical data for all tickers')
     parser.add_argument('--daily-update', action='store_true', help='Update data with latest OHLC values')
+    parser.add_argument('--update-ticker-info', action='store_true', help='Update ticker names and sectors from PSX website')
     parser.add_argument('--full-run', action='store_true', help='Execute complete pipeline')
     parser.add_argument('--version', action='version', version=f'PSX Data Pipeline v{__version__}')
     
@@ -63,6 +66,13 @@ def main():
             logger.error("Ticker synchronization failed")
             return 1
     
+    if args.update_ticker_info:
+        logger.info("Starting ticker information update...")
+        success = update_ticker_info()
+        if not success:
+            logger.error("Ticker information update failed")
+            return 1
+            
     if args.download_historical:
         logger.info("Starting historical data download...")
         # Future: Import and call historical data download function
@@ -77,7 +87,7 @@ def main():
         # update_daily()
         logger.info("Daily update not yet implemented")
     
-    if args.full_run or not any([args.sync_tickers, args.download_historical, args.daily_update]):
+    if args.full_run or not any([args.sync_tickers, args.download_historical, args.daily_update, args.update_ticker_info]):
         logger.info("Starting full pipeline run...")
         
         # Step 1: Sync tickers
@@ -87,12 +97,18 @@ def main():
             logger.error("Ticker synchronization failed - aborting pipeline")
             return 1
         
-        # Step 2: Download historical data (to be implemented)
-        logger.info("Step 2: Downloading historical data...")
+        # Step 2: Update ticker information
+        logger.info("Step 2: Updating ticker names and sectors...")
+        success = update_ticker_info()
+        if not success:
+            logger.error("Ticker information update failed - continuing with pipeline")
+            
+        # Step 3: Download historical data (to be implemented)
+        logger.info("Step 3: Downloading historical data...")
         logger.info("Historical data download not yet implemented")
         
-        # Step 3: Daily update (to be implemented)
-        logger.info("Step 3: Performing daily update...")
+        # Step 4: Daily update (to be implemented)
+        logger.info("Step 4: Performing daily update...")
         logger.info("Daily update not yet implemented")
     
     logger.info("Pipeline execution completed")
