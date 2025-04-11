@@ -18,7 +18,8 @@ import numpy as np
 from psx_data_automation.config import DATA_DIR
 
 # Set up logging
-logger = logging.getLogger("psx_pipeline.historical_data")
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def generate_realistic_ticker_data(symbol, days=252, start_date=None, volatility=0.02):
     """

@@ -69,17 +69,41 @@ async def fetch_page(url: str) -> Optional[str]:
         Optional[str]: HTML content if successful, None otherwise
     """
     try:
-        # Use the crawler to fetch the page
-        response = await psx_crawler.get(url)
+        # Use requests directly with retry logic
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Referer': PSX_DATA_PORTAL_URL,
+            'Connection': 'keep-alive',
+            'Cache-Control': 'max-age=0',
+        }
         
-        if response.status_code == 200:
-            return response.text
-        else:
-            logger.warning(f"Failed to fetch {url}: HTTP {response.status_code}")
-            return None
+        for attempt in range(3):  # Try up to 3 times
+            try:
+                response = requests.get(url, headers=headers, timeout=30)
+                if response.status_code == 200:
+                    return response.text
+                elif response.status_code == 404:
+                    logger.warning(f"Page not found (404): {url}")
+                    return None
+                else:
+                    logger.warning(f"HTTP {response.status_code} when fetching {url}")
+                    if attempt < 2:  # If not the last attempt
+                        time.sleep(1 * (2 ** attempt))  # Exponential backoff
+                    else:
+                        return None
+            except requests.RequestException as e:
+                logger.warning(f"Request error on attempt {attempt+1} for {url}: {str(e)}")
+                if attempt < 2:  # If not the last attempt
+                    time.sleep(1 * (2 ** attempt))  # Exponential backoff
+                else:
+                    return None
     except Exception as e:
         logger.error(f"Error fetching {url}: {str(e)}")
         return None
+    
+    return None
 
 
 async def fetch_company_details(symbol: str, url: Optional[str] = None) -> Dict[str, str]:
