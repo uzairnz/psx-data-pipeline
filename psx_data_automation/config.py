@@ -34,6 +34,19 @@ SCSTRADE_BASE_URL = "https://www.scstrade.com"
 SCSTRADE_SNAPSHOT_URL = "https://www.scstrade.com/stockscreening/SS_CompanySnapShotHP.aspx?symbol="
 SCSTRADE_HISTORICAL_URL = "https://www.scstrade.com/stockscreening/SS_HistoricalCloseHP.aspx?symbol="
 
+# Investing.com data source
+INVESTING_BASE_URL = "https://www.investing.com"
+INVESTING_SEARCH_URL = "https://www.investing.com/search/?q="
+INVESTING_HISTORICAL_URL = "https://www.investing.com/equities/{ticker}-historical-data"
+
+# Ticker name mapping from PSX to Investing.com format
+# Examples: 
+# "LUCK" -> "lucky-cement"
+# "HBL" -> "habib-bank"
+TICKER_TO_INVESTING_MAP = {
+    # This will be populated dynamically based on search results
+}
+
 # File paths
 TICKERS_FILE = "tickers.json"  # Default filename for storing ticker data
 

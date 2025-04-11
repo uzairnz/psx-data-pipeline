@@ -24,7 +24,8 @@ from typing import Dict, List, Optional
 from psx_data_automation.config import __version__, LOG_DIR, DATA_DIR, TICKERS_FILE
 from psx_data_automation.scripts.scrape_tickers import fetch_tickers_from_psx
 from psx_data_automation.scripts.update_ticker_info import update_ticker_info
-from psx_data_automation.scripts.historical_data import download_ticker_data
+from psx_data_automation.scripts.historical_data import download_ticker_data as download_synthetic_data
+from psx_data_automation.investing_data import download_historical_data as download_investing_data
 from psx_data_automation.scripts.crawler import test_crawl4ai
 
 # Set up logging
@@ -85,6 +86,7 @@ def run_pipeline(
     mock_mode: bool = False,
     max_tickers: Optional[int] = None,
     tickers_file: Optional[str] = None,
+    use_synthetic_data: bool = False,
 ) -> None:
     """Run the PSX data pipeline."""
     tickers = []
@@ -129,7 +131,15 @@ def run_pipeline(
         symbols = [ticker["symbol"] for ticker in tickers]
         
         logger.info(f"Downloading historical data for {len(symbols)} tickers...")
-        download_ticker_data(symbols, mock_mode=mock_mode)
+        
+        if mock_mode or use_synthetic_data:
+            # Use synthetic data generation
+            logger.info("Using synthetic data generation...")
+            download_synthetic_data(symbols, mock_mode=True)
+        else:
+            # Use investing.com data source with fallback to synthetic
+            logger.info("Using investing.com data source with synthetic fallback...")
+            download_investing_data(symbols)
 
 
 def main():
@@ -164,6 +174,12 @@ def main():
         "--mock",
         action="store_true",
         help="Use mock data for testing",
+    )
+    
+    parser.add_argument(
+        "--synthetic",
+        action="store_true",
+        help="Force using synthetic data instead of real data",
     )
     
     parser.add_argument(
@@ -216,6 +232,7 @@ def main():
         mock_mode=args.mock,
         max_tickers=args.max_tickers,
         tickers_file=args.tickers_file,
+        use_synthetic_data=args.synthetic,
     )
 
 

@@ -6,7 +6,7 @@ This project automates the full pipeline for collecting, updating, and maintaini
 - Scrape and store **10 years** of daily OHLC data for all available tickers.
 - **Update ticker list** regularly to reflect additions, deletions, and name changes.
 - **Download new OHLC records daily** after market close.
-- Generate realistic synthetic data when external data sources are unreliable.
+- Use reliable data sources like Investing.com with a fallback to synthetic data generation.
 - Log updates, manage files, and optionally support scheduled runs via Task Scheduler or Cron.
 
 ---
@@ -95,9 +95,19 @@ psx_data_automation/
 
 ---
 
-## 📈 Synthetic Data Generation
+## 📈 Data Sources
 
-Due to limitations with external data sources, the project uses a sophisticated algorithm to generate realistic synthetic historical price data:
+The pipeline supports multiple data sources for historical price data:
+
+### 1. Investing.com (Primary Source)
+- Real historical price data from a reliable financial data provider
+- Automatically maps PSX ticker symbols to Investing.com URL formats
+- Handles date range selection and data extraction
+- Caches ticker mappings for future use
+- Used by default for all data fetching operations
+
+### 2. Synthetic Data Generation (Fallback)
+When real data is unavailable, the system falls back to generating realistic synthetic data:
 
 - **Realistic Price Movement**: Uses random walk with configurable volatility
 - **Ticker-Consistent**: Same ticker always generates the same data pattern
@@ -112,7 +122,7 @@ The synthetic data generation is suitable for:
 - UI/UX development
 - Algorithm testing
 
-To use real data, you can implement custom data providers by extending the `historical_data.py` module.
+You can explicitly choose which data source to use with the `--synthetic` flag.
 
 ---
 
@@ -179,8 +189,11 @@ python -m psx_data_automation.main --full-run
 # Just synchronize tickers
 python -m psx_data_automation.main --scrape-tickers
 
-# Download historical data for all tickers
+# Download historical data from Investing.com for all tickers
 python -m psx_data_automation.main --download-historical
+
+# Force using synthetic data instead of real data
+python -m psx_data_automation.main --download-historical --synthetic
 
 # Run with a limited number of tickers (for testing)
 python -m psx_data_automation.main --full-run --max-tickers 5
@@ -189,10 +202,12 @@ python -m psx_data_automation.main --full-run --max-tickers 5
 ---
 
 ## 🔄 URL Pattern Changes
-The project now uses a standardized URL pattern for company information:
-- The URL pattern is defined in `config.py` as `COMPANY_URL_TEMPLATE`
-- The current pattern is: `https://dps.psx.com.pk/company/{symbol}`
-- If the PSX website changes its structure, only this configuration needs to be updated
+The project uses standardized URL patterns for different data sources:
+
+- **PSX Website**: `https://dps.psx.com.pk/company/{symbol}`
+- **Investing.com**: `https://www.investing.com/equities/{ticker-name}-historical-data`
+
+If these websites change their structure, only the configuration in `config.py` needs to be updated.
 
 ---
 
@@ -202,7 +217,8 @@ The project now uses a standardized URL pattern for company information:
 - Archive removed/delisted tickers
 - Export to Parquet or Feather for faster I/O
 - Add backfill checks for recent missing data
-- Implement connectors for real data providers
+- Add support for more data providers
+- Implement date range filtering for data downloads
 - Add configurable parameters for synthetic data generation
 
 ---
