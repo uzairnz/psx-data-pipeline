@@ -39,12 +39,31 @@ INVESTING_BASE_URL = "https://www.investing.com"
 INVESTING_SEARCH_URL = "https://www.investing.com/search/?q="
 INVESTING_HISTORICAL_URL = "https://www.investing.com/equities/{ticker}-historical-data"
 
+# For direct access to known stocks
+MILLAT_TRACTOR_URL = "https://www.investing.com/equities/millat-tractor-historical-data"
+
 # Ticker name mapping from PSX to Investing.com format
 # Examples: 
 # "LUCK" -> "lucky-cement"
 # "HBL" -> "habib-bank"
 TICKER_TO_INVESTING_MAP = {
-    # This will be populated dynamically based on search results
+    # Common Pakistan stock tickers
+    "LUCK": "lucky-cement",
+    "ENGRO": "engro-corporation-limited",
+    "HBL": "habib-bank-limited",
+    "PSO": "pakistan-state-oil-co",
+    "OGDC": "oil-and-gas-development-company-limited",
+    "UBL": "united-bank-limited",
+    "EFERT": "engro-fertilizer-ltd",
+    "MARI": "mari-petroleum-co-limited",
+    "MCB": "mcb-bank-limited",
+    "PPL": "pakistan-petroleum-limited",
+    "FFC": "fauji-fertilizer-company-limited",
+    "HUBC": "hub-power-company-limited",
+    "BAFL": "bank-alfalah-limited",
+    "MEBL": "meezan-bank-limited",
+    "POL": "pakistan-oilfields-limited",
+    # This will be populated dynamically based on search results for other tickers
 }
 
 # File paths
