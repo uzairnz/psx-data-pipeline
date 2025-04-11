@@ -57,48 +57,85 @@ def search_ticker_on_investing(psx_ticker: str) -> Optional[str]:
     
     try:
         logger.info(f"Searching for {psx_ticker} on investing.com...")
-        # First try to search by PSX ticker
-        search_url = f"{INVESTING_SEARCH_URL}{psx_ticker}+pakistan"
-        response = requests.get(search_url, headers=HEADERS, timeout=10)
         
-        if response.status_code != 200:
-            logger.error(f"Failed to search for {psx_ticker}. Status code: {response.status_code}")
-            return None
+        # Different search approaches to try
+        search_queries = [
+            f"{psx_ticker}+pakistan+stock",
+            f"{psx_ticker}+pakistan",
+            f"{psx_ticker}+karachi+stock"
+        ]
         
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # Look for equities in search results
-        result_elements = soup.select('.js-inner-all-results-quote-item')
-        
-        for element in result_elements:
-            # Check if it's a Pakistan stock
-            country_element = element.select_one('.flag.Pakistan')
-            if not country_element:
+        for query in search_queries:
+            search_url = f"{INVESTING_SEARCH_URL}{query}"
+            
+            # Add referer and cookie headers to appear more like a browser
+            headers = HEADERS.copy()
+            headers["Referer"] = INVESTING_BASE_URL
+            
+            response = requests.get(search_url, headers=headers, timeout=15)
+            
+            if response.status_code != 200:
+                logger.warning(f"Failed to search for '{query}'. Status code: {response.status_code}")
                 continue
             
-            # Extract the URL from the anchor tag
-            link_element = element.select_one('a.js-inner-all-results-quote-item-title')
-            if not link_element:
-                continue
+            soup = BeautifulSoup(response.text, 'html.parser')
             
-            href = link_element.get('href', '')
-            if '/equities/' in href:
-                # Extract the URL-friendly name from the href
-                url_friendly_name = href.split('/equities/')[1].split('-historical-data')[0]
+            # Try different selectors for results
+            for selector in ['.js-inner-all-results-quote-item', '.searchSectionMain tr', '.searchSectionInner tr']:
+                result_elements = soup.select(selector)
                 
-                # Save mapping for future use
-                TICKER_TO_INVESTING_MAP[psx_ticker] = url_friendly_name
+                if not result_elements:
+                    logger.debug(f"No results found with selector '{selector}'")
+                    continue
                 
-                # Save the entire mapping to disk for future runs
-                config_file = os.path.join(DATA_DIR, 'investing_ticker_map.json')
-                try:
-                    with open(config_file, 'w') as f:
-                        json.dump(TICKER_TO_INVESTING_MAP, f, indent=2)
-                    logger.info(f"Saved ticker mapping to {config_file}")
-                except Exception as e:
-                    logger.warning(f"Failed to save ticker mapping: {str(e)}")
+                logger.info(f"Found {len(result_elements)} potential matches with selector '{selector}'")
                 
-                return url_friendly_name
+                for element in result_elements:
+                    # Look for Pakistan flag or text
+                    country_found = False
+                    for flag_selector in ['.flag.Pakistan', '.flag.pk', '.countryFlag', 'td:contains("Pakistan")', 'td:contains("Karachi")']:
+                        country_element = element.select_one(flag_selector) if ':contains' not in flag_selector else None
+                        if country_element or (hasattr(element, 'text') and ('Pakistan' in element.text or 'Karachi' in element.text)):
+                            country_found = True
+                            break
+                    
+                    if not country_found:
+                        continue
+                    
+                    # Extract URL from different potential elements
+                    href = None
+                    link_selectors = ['a.js-inner-all-results-quote-item-title', 'a.bold', 'a[href*="/equities/"]']
+                    
+                    for link_selector in link_selectors:
+                        link_element = element.select_one(link_selector)
+                        if link_element and link_element.get('href'):
+                            href = link_element.get('href')
+                            break
+                    
+                    if not href or '/equities/' not in href:
+                        continue
+                    
+                    # Extract the URL-friendly name from the href
+                    url_friendly_name = href.split('/equities/')[1]
+                    # Handle possible trailing segments
+                    for segment in ['-historical-data', '?', '#']:
+                        if segment in url_friendly_name:
+                            url_friendly_name = url_friendly_name.split(segment)[0]
+                    
+                    # Save mapping for future use
+                    TICKER_TO_INVESTING_MAP[psx_ticker] = url_friendly_name
+                    
+                    # Save the entire mapping to disk for future runs
+                    config_file = os.path.join(DATA_DIR, 'investing_ticker_map.json')
+                    try:
+                        with open(config_file, 'w') as f:
+                            json.dump(TICKER_TO_INVESTING_MAP, f, indent=2)
+                        logger.info(f"Saved ticker mapping to {config_file}")
+                    except Exception as e:
+                        logger.warning(f"Failed to save ticker mapping: {str(e)}")
+                    
+                    logger.info(f"Successfully mapped {psx_ticker} to {url_friendly_name}")
+                    return url_friendly_name
     
     except Exception as e:
         logger.error(f"Error searching for {psx_ticker} on investing.com: {str(e)}")
@@ -156,24 +193,135 @@ def fetch_historical_data(
     try:
         logger.info(f"Fetching historical data for {psx_ticker} from {url}")
         
-        # First, get the page to extract any required tokens
-        response = requests.get(url, headers=HEADERS, timeout=15)
+        # Enhanced headers to better mimic a browser
+        headers = HEADERS.copy()
+        headers["Referer"] = INVESTING_BASE_URL
+        headers["X-Requested-With"] = "XMLHttpRequest"
+        
+        # First attempt: Try direct access to the historical data page
+        session = requests.Session()
+        
+        # Make initial request to get cookies and page structure
+        response = session.get(url, headers=headers, timeout=20)
         
         if response.status_code != 200:
             logger.error(f"Failed to access {url}. Status code: {response.status_code}")
-            return None
+            # Try simplified URL
+            simple_url = f"{INVESTING_BASE_URL}/equities/{investing_ticker}"
+            logger.info(f"Trying simplified URL: {simple_url}")
+            response = session.get(simple_url, headers=headers, timeout=20)
+            
+            if response.status_code != 200:
+                logger.error(f"Failed to access simplified URL. Status code: {response.status_code}")
+                return None
         
         # Parse the HTML to extract data from the table
         soup = BeautifulSoup(response.text, 'html.parser')
         
-        # Find the data table
-        table = soup.select_one('#curr_table')
+        # Look for the historical data table
+        table_selectors = ['#curr_table', '.genTbl.closedTbl.historicalTbl', '.common-table.medium.js-table']
+        table = None
+        
+        for selector in table_selectors:
+            table = soup.select_one(selector)
+            if table:
+                logger.info(f"Found historical data table with selector: {selector}")
+                break
+        
+        if not table:
+            # If no table is found on the initial page, we need to try the date selection form
+            logger.warning(f"No data table found on initial page for {psx_ticker}. Trying date selection...")
+            
+            # Try to extract any form tokens needed for the date selection request
+            form_selectors = ['#datePickerForm', 'form[action*="historical-data"]']
+            form = None
+            form_data = {}
+            
+            for selector in form_selectors:
+                form = soup.select_one(selector)
+                if form:
+                    logger.info(f"Found form with selector: {selector}")
+                    # Extract hidden fields
+                    for input_field in form.select('input[type="hidden"]'):
+                        name = input_field.get('name')
+                        value = input_field.get('value')
+                        if name and value:
+                            form_data[name] = value
+                    break
+            
+            if form:
+                # Add date parameters to form data
+                form_data.update({
+                    'dateFrom': start_str,
+                    'dateTo': end_str,
+                    'period': ''  # Daily data
+                })
+                
+                # Get form action URL
+                form_action = form.get('action')
+                date_selection_url = form_action if form_action and form_action.startswith('http') else url
+                
+                # Make POST request to get historical data with specified date range
+                post_headers = headers.copy()
+                post_headers['Content-Type'] = 'application/x-www-form-urlencoded'
+                
+                try:
+                    response = session.post(date_selection_url, data=form_data, headers=post_headers, timeout=20)
+                    if response.status_code == 200:
+                        soup = BeautifulSoup(response.text, 'html.parser')
+                        # Try finding the table again
+                        for selector in table_selectors:
+                            table = soup.select_one(selector)
+                            if table:
+                                logger.info(f"Found historical data table after date selection with selector: {selector}")
+                                break
+                except Exception as e:
+                    logger.error(f"Error in POST request for date selection: {str(e)}")
+        
+        # If we still don't have a table, try a different approach
+        if not table:
+            logger.warning(f"Still no data table found for {psx_ticker}. Checking for data in page content...")
+            
+            # Check if there's a JavaScript variable containing the data
+            data_pattern = re.search(r'var\s+historyData\s*=\s*(\[.*?\]);', str(soup), re.DOTALL)
+            if data_pattern:
+                try:
+                    import json
+                    history_data = json.loads(data_pattern.group(1))
+                    logger.info(f"Found history data in JavaScript variable with {len(history_data)} entries")
+                    
+                    # Convert JavaScript data to DataFrame
+                    df = pd.DataFrame(history_data)
+                    # Map column names
+                    col_mapping = {'date': 'date', 'open': 'open', 'high': 'high', 'low': 'low', 'close': 'close', 'volume': 'volume'}
+                    df = df.rename(columns={k: v for k, v in col_mapping.items() if k in df.columns})
+                    
+                    # Save to file
+                    file_path = os.path.join(DATA_DIR, f"{psx_ticker}.csv")
+                    df.to_csv(file_path, index=False)
+                    logger.info(f"Saved historical data for {psx_ticker} to {file_path}")
+                    
+                    return df
+                    
+                except Exception as e:
+                    logger.error(f"Error processing JavaScript data: {str(e)}")
+        
         if not table:
             logger.error(f"Could not find historical data table for {psx_ticker}")
             return None
         
         # Extract table headers
-        headers = [th.text.strip() for th in table.select('thead th')]
+        headers = []
+        for th in table.select('thead th, tr.first th'):
+            header_text = th.text.strip()
+            if header_text:
+                headers.append(header_text)
+        
+        if not headers:
+            logger.error(f"No headers found in table for {psx_ticker}")
+            return None
+            
+        logger.info(f"Found table headers: {headers}")
         
         # Extract table rows
         rows = []
@@ -181,6 +329,12 @@ def fetch_historical_data(
             row = [td.text.strip() for td in tr.select('td')]
             if len(row) == len(headers):
                 rows.append(row)
+        
+        if not rows:
+            logger.error(f"No data rows found in table for {psx_ticker}")
+            return None
+            
+        logger.info(f"Extracted {len(rows)} data rows")
         
         # Create DataFrame
         df = pd.DataFrame(rows, columns=headers)
@@ -288,14 +442,16 @@ def download_historical_data(symbols: List[str], days: int = 3650) -> Dict[str, 
     
     results = {}
     success_count = 0
+    fallback_count = 0
+    failed_count = 0
     
     # Calculate start date
     end_date = datetime.now()
     start_date = end_date - timedelta(days=days)
     
-    for symbol in symbols:
+    for i, symbol in enumerate(symbols):
         try:
-            logger.info(f"Fetching data for {symbol}")
+            logger.info(f"[{i+1}/{len(symbols)}] Processing {symbol}")
             
             # Fetch from investing.com
             df = fetch_historical_data(symbol, start_date, end_date)
@@ -303,30 +459,69 @@ def download_historical_data(symbols: List[str], days: int = 3650) -> Dict[str, 
             if df is not None and not df.empty:
                 results[symbol] = df
                 success_count += 1
-                logger.info(f"Successfully downloaded data for {symbol}")
+                logger.info(f"Successfully downloaded data for {symbol} from investing.com")
             else:
-                logger.warning(f"No data found for {symbol}, will use synthetic data instead")
+                logger.warning(f"No data found for {symbol} on investing.com, falling back to synthetic data")
                 
                 # Fallback to synthetic data
                 from psx_data_automation.historical_data import generate_realistic_ticker_data
-                df = generate_realistic_ticker_data(symbol)
+                df = generate_realistic_ticker_data(symbol, days=days)
                 
-                file_path = os.path.join(DATA_DIR, f"{symbol}.csv")
-                df.to_csv(file_path, index=False)
-                logger.info(f"Saved synthetic data for {symbol} to {file_path}")
-                
-                results[symbol] = df
+                if df is not None and not df.empty:
+                    file_path = os.path.join(DATA_DIR, f"{symbol}.csv")
+                    df.to_csv(file_path, index=False)
+                    logger.info(f"Saved synthetic data for {symbol} to {file_path}")
+                    
+                    results[symbol] = df
+                    fallback_count += 1
+                else:
+                    logger.error(f"Failed to generate synthetic data for {symbol}")
+                    failed_count += 1
                 
             # Add a delay to avoid hitting rate limits
-            time.sleep(2)
+            time.sleep(3)
             
         except Exception as e:
-            logger.error(f"Error downloading data for {symbol}: {str(e)}")
+            logger.error(f"Error processing {symbol}: {str(e)}")
+            failed_count += 1
     
-    logger.info(f"Successfully downloaded data for {success_count} out of {len(symbols)} symbols")
+    # Log final summary
+    logger.info(f"Historical data download summary:")
+    logger.info(f"  - Total tickers processed: {len(symbols)}")
+    logger.info(f"  - Successfully downloaded from investing.com: {success_count}")
+    logger.info(f"  - Fallback to synthetic data: {fallback_count}")
+    logger.info(f"  - Failed to get data: {failed_count}")
+    
     return results
 
 if __name__ == "__main__":
-    # Test with a few symbols
-    symbols = ["LUCK", "ENGRO", "HBL", "PSO", "OGDC"]
-    download_historical_data(symbols, days=365)  # Get 1 year of data for testing 
+    # Test with the most common Pakistan stocks
+    symbols = ["LUCK", "ENGRO", "HBL", "PSO", "OGDC", "MCB", "UBL", "PPL", "FFC", "MEBL"]
+    
+    # Test single stock to debug
+    def test_single_stock(symbol):
+        print(f"\n----- Testing {symbol} -----")
+        investing_ticker = search_ticker_on_investing(symbol)
+        print(f"Mapping: {symbol} -> {investing_ticker}")
+        
+        if investing_ticker:
+            # Test date range to last 6 months
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=180)
+            
+            df = fetch_historical_data(symbol, start_date, end_date)
+            if df is not None and not df.empty:
+                print(f"Successful! Got {len(df)} rows of data.")
+                print("First 5 rows:")
+                print(df.head())
+            else:
+                print(f"Failed to get data for {symbol}")
+        else:
+            print(f"Failed to map {symbol} to investing.com ticker")
+    
+    # Test the entire pipeline on a few stocks
+    download_historical_data(symbols[:3], days=180)  # Get 6 months of data for 3 stocks
+    
+    # Test single stock for debugging if needed
+    # Uncomment to test specific stock
+    # test_single_stock("LUCK") 
